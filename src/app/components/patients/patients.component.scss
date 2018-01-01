@@ -1,0 +1,26 @@
+.patient-meta-col{
+	/*background-color: red;*/
+}
+
+.btn-add-pat{
+	padding-top: 3px;
+	background-color: #fefefe;
+}
+
+h4.header-title{
+	color:#777;
+}
+
+ul.patients-list{
+	li{
+		i{
+			color:#bbb;
+		}
+		.pat-name{
+			padding-left:5px;
+		}
+	}
+	li.item:nth-child(even){
+		//background-color: #eee;
+	}
+}

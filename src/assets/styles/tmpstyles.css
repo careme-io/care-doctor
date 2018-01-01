@@ -1,0 +1,154 @@
+input.disabled, a.disabled{
+	color: #aaa !important;
+}	
+input.disabled:hover, a.disabled:hover{
+	background: #fff !important;
+}	
+/*.pagination > li.selected > a, .pagination > li.selected > span{
+	background-color:red !important;
+}*/
+.actions-wrapper{
+	margin-top: 40px;
+}
+#loginError{
+	color: red;
+}
+.patient-form-wrapper{
+	/*min-height: 500px;*/
+	height: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+
+	/*padding: 0px 20px 0px 0px;*/
+}
+#patient-form{
+	height: auto;
+	min-height: 800px;
+}
+#map{
+	height: 400px;
+	width: 100%;
+}
+
+/** new laytout styles **/
+#wrapper.enlarged .left.side-menu #sidebar-menu ul > li:hover > a{
+	width: 70px;
+}
+.content-page > .content.tight{
+	margin-top: 50px;
+}
+
+.tri-col-wrapper{
+	height: auto;
+	overflow: hidden;
+}
+.tri-col{
+	/*border-bottom: solid 1px #aaa;*/
+	height: 700px;
+	overflow: hidden;
+	padding: 0px;
+	margin:0px;
+}
+.tri-col-left{
+	border-left:1px solid #ddd;
+}
+.tri-col-mid{
+	border-left:1px solid #ddd;
+}
+.tri-col-right{
+	border-left:1px solid #ddd;
+}
+.tri-col .col-header{
+	height: 32px;
+	background-color: #fefefe;
+	border-bottom: 1px solid #eee;
+}
+.diagnosis-wrapper{
+	padding:10px;
+}
+.patient-meta-col{
+	background-color:#fefefe;
+	padding:10px;
+}
+.patient-meta-wrapper{
+	width: 100%;
+}
+.items-wrapper{
+	width:100%;
+}
+.items-wrapper ul {
+	width: inherit;
+	margin:0px;
+	padding: 0px;
+	height: 100%;
+	overflow: hidden;
+}
+.items-wrapper ul > li.item{
+	width: inherit;
+	list-style: none;
+	border-bottom: 1px solid #ddd;
+	padding:5px 5px 5px 10px;
+}
+.items-wrapper ul > li.item:hover{
+	background-color:#f0f0f0;
+	cursor: pointer;
+}
+.patients-list{
+	margin-top: 5px;
+	background: #fafafa;
+}
+.items-search-wrapper{
+	border-bottom: 1px solid #eee;
+}
+.items-search-wrapper .input-group-addon, .select-section .input-group-addon{
+	background: #fefefe;
+	font-size: 12px;
+	border-radius: 0px;
+	border:none;
+	color: #999;
+}
+.items-search-wrapper input.search-input, .select-section select{
+	background: #fefefe;
+	border-radius: 0px;
+	font-size: 13px;
+	padding-left:0px;
+	padding-top:7px;
+	/*border-color:#eee;
+	border-top:none;
+	border-left:none;
+	border-right:none;*/
+	border:none;
+	margin:0px;
+}
+
+inptxt{
+	width: 100%;
+}
+
+#wrapper.enlarged .navbar-custom {
+	margin-left: 0px;
+	padding-left:9px;
+}
+
+.content-page > .content.tight{
+	margin-top:30px;
+}
+body.fixed-left .side-menu.left{
+	top: 50px;
+}
+#wrapper.enlarged .left.side-menu{
+	width: 50px;
+	overflow: hidden;
+}
+
+#wrapper.enlarged .left.side-menu #sidebar-menu > ul > li > a {
+	padding: 15px 12px;
+}
+
+#wrapper.enlarged .content-page{
+	margin-left: 50px;
+}
+
+.content-page > .content{
+	margin-top: 50px;
+}

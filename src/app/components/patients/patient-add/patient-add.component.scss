@@ -1,0 +1,76 @@
+.patient-form-wrapper{
+    min-height: 500px;
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    /* padding: 0px 20px 0px 0px; */
+    width: 50%;
+    position: absolute;
+    right: 0px;
+    z-index: 10;
+    top: 50px;
+    background: #fefefe;
+    overflow: visible;
+    
+    #patient-form{
+        box-shadow: 0px -5px 15px -3px #333;
+        padding-top:20px;
+        position:relative;
+        z-index: 2;
+    }
+}
+.layer-overlay{
+    background-color: rgba(100,100,100,.8);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+}
+.btn-primary.pull-right{
+    margin-left:15px;
+    margin-right:0px;
+}
+.btn-primary{
+    margin-right:15px;
+}
+.no-mar{
+    margin-top:0px !important;
+    margin-left:0px !important;
+    margin-right:0px !important;
+    margin-bottom:0px !important;
+}
+.no-pad{
+    padding-top:0px !important;
+    padding-left:0px !important;
+    padding-right:0px !important;
+    padding-bottom:0px !important;
+}
+.no-mar-pad{
+    margin-top:0px !important;
+    margin-left:0px !important;
+    margin-right:0px !important;
+    margin-bottom:0px !important;
+    padding:0px !important;
+    padding-top:0px !important;
+    padding-left:0px !important;
+    padding-right:0px !important;
+    padding-bottom:0px !important;
+}
+.rs-close-btn{
+    position:absolute;
+    top: 0px;
+    left: -40px;
+    background:rgba(255,255,255,.6);
+    border-radius:0 0 0 80%;
+    width: 40px;
+    height: 40px;
+    color: #666;
+    font-size: 16px;
+    z-index: 1;
+    border:none;
+    i{
+        position:relative;
+        top: -2px;
+        left: 3px;
+    }
+}
