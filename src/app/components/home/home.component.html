@@ -1,18 +1,21 @@
-
-<div class="content-page">
-	<div class="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
-                    <div class="card-box tilebox-one">
-                    
-                        <i class="zmdi zmdi-male-female pull-xs-right text-muted"></i>
-                        <h6 class="text-muted text-uppercase m-b-20">Patients</h6>
-                        <h2 class="m-b-20" data-plugin="counterup"></h2>
-                        <!-- <span class="label label-success"> +11% </span> <span class="text-muted">From previous period</span> -->
+<app-header></app-header>
+<div class="wrapper">
+    <div class="content-page">
+    	<div class="content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
+                        <div class="card-box tilebox-one">
+                        
+                            <i class="zmdi zmdi-male-female pull-xs-right text-muted"></i>
+                            <h6 class="text-muted text-uppercase m-b-20">Patients</h6>
+                            <h2 class="m-b-20" data-plugin="counterup">{{patients.length}}</h2>
+                            <!-- <span class="label label-success"> +11% </span> <span class="text-muted">From previous period</span> -->
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<status-bar></status-bar>

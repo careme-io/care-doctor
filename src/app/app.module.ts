@@ -18,6 +18,14 @@ import { objNgFor } from './pipes/objNgFor.pipe';
 import { search } from './pipes/search.pipe';
 import { InptxtComponent } from './components/inptxt/inptxt.component';
 import { PatientAddComponent } from './components/patients/patient-add/patient-add.component';
+import { AdvtxtareaComponent } from './components/advtxtarea/advtxtarea.component';
+import { VtimelineComponent } from './components/vtimeline/vtimeline.component';
+import { DiagMomentComponent } from './components/vtimeline/diag-moment/diag-moment.component';
+import { AttViewerComponent } from './components/patients/att-viewer/att-viewer.component';
+import { ForKeysPipe } from './pipes/for-keys.pipe';
+import { StatusBarComponent } from './components/status-bar/status-bar.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 @NgModule({
@@ -33,7 +41,15 @@ import { PatientAddComponent } from './components/patients/patient-add/patient-a
     objNgFor,
     search,
     InptxtComponent,
-    PatientAddComponent
+    PatientAddComponent,
+    AdvtxtareaComponent,
+    VtimelineComponent,
+    DiagMomentComponent,
+    AttViewerComponent,
+    ForKeysPipe,
+    StatusBarComponent,
+    LoginComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

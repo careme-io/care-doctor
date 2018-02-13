@@ -11,6 +11,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({ name: 'objNgFor',  pure: false })
 export class objNgFor implements PipeTransform {
     transform(value: any, args: any[] = null): any {
+    	if(value)
         return Object.keys(value)//.map(key => value[key]);
     }
 }

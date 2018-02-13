@@ -11,6 +11,11 @@ h4.header-title{
 	color:#777;
 }
 
+.diagnosis-wrapper{
+	background: #f5f4ee;
+	overflow: scroll;
+}
+
 ul.patients-list{
 	li{
 		i{
@@ -22,5 +27,49 @@ ul.patients-list{
 	}
 	li.item:nth-child(even){
 		//background-color: #eee;
+	}
+}
+
+.attachments-wrapper{
+	padding:10px 0 5px 10px;
+	.btn-att{
+		margin-left:20px;
+	}
+}
+
+.attachments-list-wrapper{	
+	overflow:scroll;
+	ul{
+		margin:0px;
+		padding: 0px;
+		li{
+			float:left;
+			width:100%;
+			height:auto;
+			overflow:hidden;
+			margin:0px;
+			box-sizing:border-box;
+			border-top:1px solid #ccc;
+			border-left:1px solid #ccc;
+			position:relative;
+			.att-item{
+				padding:3px 20px;
+				background: #efefef;
+				text-decoration: none;
+				.rmv-btn{
+					display: none;
+					position:absolute;
+					right: 10px;
+					top:3px;
+				}
+			}
+			.att-item:hover{
+				background: #ddd;
+				cursor:pointer;
+				.rmv-btn{
+					display:block;
+				}
+			}
+		}
 	}
 }

@@ -1,0 +1,11 @@
+<div class="adv-txtarea-wrapper" [style.width.px]="comwidth">
+{{width}}
+	<div class="txtarea-wrapper">
+		<textarea name="textarea" rows="3" #txtarea [(ngModel)]="txtValue"></textarea>
+
+	</div>
+	<div class="actions-wrapper">
+		<button *ngIf="!date" class="pull-right btn btn-sm btn-success" (click)="saveText(txtarea.value)" >Save</button>
+		<button *ngIf="date" class="pull-right btn btn-sm btn-success" (click)="updateText(txtarea.value)">Update</button>
+	</div>			
+</div>

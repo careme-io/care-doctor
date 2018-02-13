@@ -1,0 +1,10 @@
+<div #scrollBottom class="v-timeline-wrapper" [style.height.px]="timelineHeight - 60">
+	<div  class="moments-wrapper" (click)="checkScroll()">
+		<div class="moments" *ngFor="let moment of moments">
+			<diag-moment 
+			[moment]="moment"
+			(updatedText)=passSaved(e);
+			></diag-moment>
+		</div>
+	</div>
+</div>

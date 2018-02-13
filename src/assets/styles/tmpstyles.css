@@ -1,3 +1,21 @@
+.tiny{
+	font-size: 10px;
+}
+.light{
+	color:#aaa;
+}
+.mid-light{
+	color:#999;
+}
+.mid{
+	color:#777;
+}
+.mid-dark{
+	color:#555;
+}
+.dark{
+	color:#333;
+}
 input.disabled, a.disabled{
 	color: #aaa !important;
 }	
@@ -40,12 +58,12 @@ input.disabled:hover, a.disabled:hover{
 
 .tri-col-wrapper{
 	height: auto;
-	overflow: hidden;
+	overflow: visible;
 }
 .tri-col{
 	/*border-bottom: solid 1px #aaa;*/
-	height: 700px;
-	overflow: hidden;
+	/*height: 700px;*/
+	/*overflow: hidden;*/
 	padding: 0px;
 	margin:0px;
 }
@@ -151,4 +169,7 @@ body.fixed-left .side-menu.left{
 
 .content-page > .content{
 	margin-top: 50px;
+}
+.content-page {
+	overflow: visible;
 }

@@ -1,0 +1,13 @@
+<div class="moment">
+		<div class="moment-text" *ngIf="!selected">{{moment.text}}<br>
+			<span class="tiny mid-light">{{moment.date | date:'d MMM yyyy h:mm a'}}</span>
+		</div>
+		<textarea *ngIf="selected" class="moment-edit" #mtxtarea [(ngModel)]="txtValue"></textarea>
+		<!-- <div class="moment-actions-wrapper">
+			<div class="actions-wrapper" *ngIf="withinEdit">
+				<button class="pull-right btn-moment-edit" (click)="editText()"><i class="fa fa-pencil"></i></button>
+				<button *ngIf="selected" class="pull-right btn-success" (click)="saveText(mtxtarea.value)"><i class="fa fa-check"></i></button>
+				<button *ngIf="selected" class="pull-right btn-danger" (click)="cancelChanges()"><i class="fa fa-times"></i></button>
+			</div>
+		</div> -->
+</div>

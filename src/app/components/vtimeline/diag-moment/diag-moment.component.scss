@@ -1,0 +1,57 @@
+.moment{
+	color:#333;
+	margin-top: 10px;
+	overflow: visible;
+	display:flex;
+	.moment-text{
+		background: #f7f3d2;
+		padding:5px 10px;
+		border-radius: 4px;
+		border:1px solid #ddd;
+	}
+	textarea{
+		width:90%;
+		max-width: 90%;
+		background: #f7f3d2;
+		padding:5px 10px;
+		border-radius: 4px;
+		border:1px solid #ddd;
+	}
+	textarea:focus{
+		outline:none;
+	}
+	.moment-text:hover{
+		box-shadow: 0px 0px 6px -2px #777;
+	}
+	.moment-actions-wrapper{
+		.actions-wrapper{
+			position:absolute;
+			margin:3px 0px 0px 3px;
+			display: flex;
+			overflow: visible;
+			flex-direction: column;
+			width: 25px;
+			button{
+				border: none;
+				border-radius: 50%;
+				opacity: .8;
+				margin: 0px 0px 5px 0px;
+				width: 100%;
+			}
+			.btn-moment-edit{
+				display:none;
+				background:#867650;
+				color:#fefefe;
+			}
+		}
+	}
+}
+.moment:hover{
+	.moment-actions-wrapper{
+		.actions-wrapper{
+			.btn-moment-edit{
+				display:block;
+			}
+		}
+	}
+}

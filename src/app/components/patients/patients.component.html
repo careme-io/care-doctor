@@ -5,133 +5,176 @@
     [diag]="diagnosis" 
     [files]="files">
 </patient-detail> -->
-<patient-add
-    *ngIf="showPatientAdd"
-    (closePatientAdd)="closePatientAdd()"
-></patient-add>
-<div class="content-page">
-    <div class="content tight">
-        <div class="row tri-col-wrapper">
-            <div class="col-md-3 tri-col tri-col-left">
-                <div class="items-search-wrapper">
-                    <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-search"></i>
+<!-- <app-header [currPage]="this.router.url"></app-header> -->
+<app-header></app-header>
+<div class="wrapper">
+    <patient-add
+        *ngIf="showPatientAdd"
+        (closePatientAdd)="closePatientAdd()"
+    ></patient-add>
+    <div class="content-page" (window:resize)="setPanelHeight()" [style.height.px]="panelHeight - 10">
+        <div class="content tight">
+            <div class="row tri-col-wrapper" >
+                <div class="col-md-3 tri-col tri-col-left" [style.height.px]="panelHeight" style="overflow: hidden;">
+                    <div class="items-search-wrapper">
+                        <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <input [(ngModel)]="query" type="text" class="form-control search-input" placeholder="Search patients">
+                        <button class="btn-link btn-add-pat" (click)="togglePatientAdd()"><i class="fa fa-plus-circle"></i> Patient</button>
                     </div>
-                    <input type="text" class="form-control search-input" placeholder="Search patients">
-                    <button class="btn-link btn-add-pat" (click)="togglePatientAdd()"><i class="fa fa-plus-circle"></i> Patient</button>
-                </div>
-                </div>
-                <div class="items-wrapper">
-                    <ul class="patients-list">
-                       <li class="item"
-                        *ngFor="let patient of patients | search:'doc.name':query" 
-                        (click)="getPatient(patient.id)">
-                            <i class="fa fa-user"></i>
-                            <span class="pat-name">{{patient.doc.name}}</span>
-                        </li>
-                    </ul>
+                    </div>
+                    <div class="items-wrapper">
+                        <ul class="patients-list" [style.height.px]="panelHeight" style="overflow:scroll;">
+                           <li class="item"
+                            *ngFor="let patient of patients | search:'name,phone':query" 
+                            (click)="getPatient(patient.id)">
+                                <i class="fa fa-user"></i>
+                                <span class="pat-name">{{patient.doc.name}}</span>
+                            </li>
+                        </ul>
 
-                    
+                        
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-6 tri-col tri-col-mid diagnosis-col">
-                <div class="col-header">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="input-group select-section">
-                                <span class="input-group-addon">View patient's</span>
-                                <select name="" id="" class="form-control">
-                                    <option value="">allergies</option>
-                                    <option value="">comments</option>
-                                </select>
+                <div class="col-md-6 tri-col tri-col-mid diagnosis-col">
+                    <div class="col-header">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="input-group select-section">
+                                    <span class="input-group-addon">View patient's</span>
+                                    <select name="diDataSel" id="" class="form-control" (change)="onDiagChange()" [(ngModel)]="selectedDiag">
+                                        <option value="allergies">allergies</option>
+                                        <option value="comments">comments</option>
+                                        <option value="history">history</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="diagnosis-wrapper" #diagWrapper>
+                                    <h5>{{selectedDiag}}</h5>
+                                    <vtimeline
+                                        [dim] = "panelDim"
+                                        [moments] = "selectedDiagData"
+                                        (selectedMoment) = "selectedPatientText($event)"
+                                        (savedText) = "savePatText($event)"
+                                    ></vtimeline>
+                                    <advtxtarea
+                                        [dim] = "panelDim"
+                                        [date] = "patientText.date"
+                                        [txtValue] = "patientText.text"
+                                        (savedText) = "savePatText($event)"
+                                    ></advtxtarea>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12 diagnosis-wrapper">
+                </div>
+                <div class="col-md-3 tri-col tri-col-right patient-meta-col">
+                    <div class="patient-meta-wrapper">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4 class="header-title">Patient Information</h4>
+                            </div>
+                        </div>
+                        <div [hidden]="patient.name == undefined" class="row">
+                            <div class="col-sm-12">
+                                <inptxt 
+                                    label = "Name"
+                                    key = "name"
+                                    [inpValue] = "patient.name"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                                <inptxt 
+                                    label = "Phone"
+                                    key = "phone"
+                                    [inpValue] = "patient.phone"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                                <inptxt 
+                                    label = "Email"
+                                    key = "email"
+                                    [inpValue] = "patient.email"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                                <inptxt 
+                                    label = "Age"
+                                    key = "age"
+                                    [inpValue] = "patient.age"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                                <inptxt 
+                                    label = "Gender"
+                                    key = "gender"
+                                    [inpValue] = "patient.gender"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                                <inptxt 
+                                    label = "Address"
+                                    key = "address"
+                                    [inpValue] = "patient.address"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                                <inptxt 
+                                    label = "City"
+                                    key = "city"
+                                    [inpValue] = "patient.city"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="attachments-wrapper">
+                                    <label>Attachments</label>
+                                <button (click)="addAttachment()" class="btn-link btn-att"><i class="fa fa-paperclip"></i> Add Attachments</button>
+                                <input class="btn-link" type="file" name="files" class="form-control" multiple (change)="filesSelected($event)" [hidden]="true" #attBtn>
+                                </div>
+                            </div>
+                            <div class="attachments-list-wrapper" [style.height.px]="panelHeight - 315">
+                                
+                                
+                                    <ul>
+                                        <li *ngFor="let att of attachments | objNgFor" (click)="viewAtt(att)">
+                                            <div class="att-item">{{att}} <span class="rmv-btn"><i (click)="onRemoveAtt(att, $event)" class="fa fa-times-circle"></i></span></div>
+                                        </li>
+                                    </ul>
+                                
+                            </div>
                             
+                            <att-viewer 
+                                *ngIf="viewAttachment"
+                                [attachment]="attachment"
+                                (closeAtt)="closeAttachment()"
+                            ></att-viewer>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 tri-col tri-col-right patient-meta-col">
-                <div class="patient-meta-wrapper">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4 class="header-title">Patient Information</h4>
-                        </div>
-                    </div>
-                    <div [hidden]="patient.name == undefined" class="row">
-                        <div class="col-sm-12">
-                            <inptxt 
-                                label = "Name"
-                                key = "name"
-                                [inpValue] = "patient.name"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                            <inptxt 
-                                label = "Phone"
-                                key = "phone"
-                                [inpValue] = "patient.phone"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                            <inptxt 
-                                label = "Email"
-                                key = "email"
-                                [inpValue] = "patient.email"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                            <inptxt 
-                                label = "Age"
-                                key = "age"
-                                [inpValue] = "patient.age"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                            <inptxt 
-                                label = "Gender"
-                                key = "gender"
-                                [inpValue] = "patient.gender"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                            <inptxt 
-                                label = "Address"
-                                key = "address"
-                                [inpValue] = "patient.address"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                            <inptxt 
-                                label = "City"
-                                key = "city"
-                                [inpValue] = "patient.city"
-                                (changedDetail)="updatePatientData($event)"
-                            ></inptxt>
-                        </div>
-                    </div>
-                   <!--  <div class="row">
-                        <div class="col-sm-12">
-                            <div class="form-group row">
-                                <label class="col-sm-2 form-control-label">Gender</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control">
-                                </div>                                
+                       <!--  <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Gender</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control">
+                                    </div>                                
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">Street</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control">
+                                    </div>                                
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 form-control-label">City</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" class="form-control">
+                                    </div>                                
+                                </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 form-control-label">Street</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control">
-                                </div>                                
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 form-control-label">City</label>
-                                <div class="col-sm-9">
-                                    <input type="email" class="form-control">
-                                </div>                                
-                            </div>
-                        </div>
-                    </div> -->
+                        </div> -->
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+<status-bar></status-bar>

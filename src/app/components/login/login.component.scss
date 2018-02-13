@@ -1,0 +1,83 @@
+.wrapper{
+
+}
+.centered-content{
+	position: absolute;
+	width:100%;
+	display:flex;
+	align-items: center;
+	align-content: center;
+	justify-content:center;
+	height:100%;
+	overflow:hidden;
+	//background:url('/hospital.jpg');
+}
+input.inp-no-fancy{
+	background:none;
+	// border-top:none;
+	// border-left:none;
+	// border-right:none;
+	border: 1px solid #ddd;
+	padding:5px;
+	border-radius:5px;
+	margin-bottom:15px;
+}
+input.inp-no-fancy:focus{
+	outline:none;
+	border-bottom:1px solid #bbb;
+}
+.login-wrapper{
+	width:600px;
+	height:300px;
+	overflow:hidden;
+	//margin-top:200px;
+	input{
+		width:100%;
+		color:#555;
+		text-indent: 3px;
+		font-size: 16px;
+		letter-spacing: 2px;
+		height:35px;
+	}
+	// input[type='password']{
+	// 	font-size:28px;
+	// 	letter-spacing:3px;
+	// 	padding-top:0px;
+	// }
+	input::placeholder{
+		letter-spacing:normal;
+		font-size:14px;
+		color:#777;
+	}
+	button.login{
+		letter-spacing: 1px;
+	}
+	.other-actions{
+		margin-top:35px;
+		a{
+			color:#999;
+			cursor:pointer;
+		}
+		a:hover{
+			color:#555;
+		}
+	}
+	.logo-wrapper{
+		.applogo{
+			padding: 30px 0px;
+		    width: 220px;
+		    border-right: 1px solid #ddd;
+		    color:#999;
+		}
+	}
+}
+.row-percent{
+	width:100%;
+	overflow:hidden;
+	height:auto;
+	box-sizing:border-box;
+	.col-fifty{
+		width:50%;
+		float:left;
+	}
+}
