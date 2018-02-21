@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { PatientDetailComponent } from './components/patients/patient-detail/patient-detail.component';
 import { objNgFor } from './pipes/objNgFor.pipe';
 import { search } from './pipes/search.pipe';
+import { inArray } from './pipes/inArray.pipe';
 import { InptxtComponent } from './components/inptxt/inptxt.component';
 import { PatientAddComponent } from './components/patients/patient-add/patient-add.component';
 import { AdvtxtareaComponent } from './components/advtxtarea/advtxtarea.component';
@@ -26,6 +27,7 @@ import { ForKeysPipe } from './pipes/for-keys.pipe';
 import { StatusBarComponent } from './components/status-bar/status-bar.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { DoctorsComponent } from './components/doctors/doctors.component';
 
 
 @NgModule({
@@ -49,7 +51,8 @@ import { ProfileComponent } from './components/profile/profile.component';
     ForKeysPipe,
     StatusBarComponent,
     LoginComponent,
-    ProfileComponent
+    ProfileComponent,
+    DoctorsComponent
   ],
   imports: [
     BrowserModule,

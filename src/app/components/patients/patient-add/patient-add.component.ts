@@ -1,18 +1,20 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PatientsService } from '../patients.service';
+import { DBService } from '../../../services/db.service';
 
 @Component({
   selector: 'patient-add',
   templateUrl: './patient-add.component.html',
   styleUrls: ['./patient-add.component.scss'],
-  providers: [PatientsService]
+  providers: [DBService]
 })
 export class PatientAddComponent implements OnInit {
 
 	patient : any;
+	@Input() docID: string;
 	@Output() closePatientAdd = new EventEmitter<{}>();
+	@Output() addedPatient = new EventEmitter<{}>();
 
-	constructor(private patientsService: PatientsService) { }
+	constructor(private dbService: DBService) { }
 
 	ngOnInit() {
 		if(this.patient == undefined) this.patient = {};
@@ -26,9 +28,11 @@ export class PatientAddComponent implements OnInit {
 	addPatient(){
 	  // console.log('patient', this.patient);
 	  var patient:any = Object.assign({}, this.patient);
-		this.patientsService.addPatient(patient).then(
+		this.dbService.addPatient(patient).then(
 	    result => {
-	      console.log('patient added');
+	      console.log('patient added', result);
+	      this.addedPatient.emit({patID : result.id});
+	      //this.dbService.addDocPatient(this.docID, result.rows[0].id)
 	    }, error => {
 	      console.error(error);
 	    });
@@ -36,9 +40,10 @@ export class PatientAddComponent implements OnInit {
 	}
 	addPatientClose(){
 	  var patient:any = Object.assign({}, this.patient);
-		this.patientsService.addPatient(patient).then(
+		this.dbService.addPatient(patient).then(
 	    result => {
-	      console.log('patient added');
+	      console.log('patient added', result);
+	      this.addedPatient.emit({patID : result.id});
 	      this.closePatientAdd.emit({});
 	    }, error => {
 	      console.error(error);

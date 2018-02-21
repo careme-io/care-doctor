@@ -6,10 +6,12 @@
     [files]="files">
 </patient-detail> -->
 <!-- <app-header [currPage]="this.router.url"></app-header> -->
-<app-header></app-header>
+<app-header [docName]="doctor.name"></app-header>
 <div class="wrapper">
     <patient-add
+        [docID] = "docID"
         *ngIf="showPatientAdd"
+        (addedPatient) = "addDocPatient($event)"
         (closePatientAdd)="closePatientAdd()"
     ></patient-add>
     <div class="content-page" (window:resize)="setPanelHeight()" [style.height.px]="panelHeight - 10">
@@ -177,4 +179,4 @@
         </div>
     </div>
 </div>
-<status-bar></status-bar>
+<status-bar [docName]="doctor.name"></status-bar>

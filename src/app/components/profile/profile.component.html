@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header [docName]="doctor.name"></app-header>
 <div class="wrapper">
     <div class="content-page">
     	<div class="content">
@@ -20,14 +20,26 @@
                         <inptxt 
                             label = "Name"
                             key = "name"
+                            [inpValue] = "docData.name"
+                            (changedDetail)="updateDocData($event)"
                         ></inptxt>
                         <inptxt 
                             label = "Email"
                             key = "email"
+                            [inpValue] = "docData.email"
+                            (changedDetail)="updateDocData($event)"
                         ></inptxt>
                         <inptxt 
                             label = "Phone"
                             key = "phone"
+                            [inpValue] = "docData.phone"
+                            (changedDetail)="updateDocData($event)"
+                        ></inptxt>
+                        <inptxt 
+                            label = "Address"
+                            key = "address"
+                            [inpValue] = "docData.address"
+                            (changedDetail)="updateDocData($event)"
                         ></inptxt>
                     </div>
                 </div>
@@ -35,4 +47,4 @@
         </div>
     </div>
 </div>
-<status-bar></status-bar>
+<status-bar [docName]="doctor.name"></status-bar>

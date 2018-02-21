@@ -1,16 +1,20 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { PatientsService } from './patients.service';
+import { DBService } from './../../services/db.service';
+import { AuthService } from './../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patients',
   templateUrl: './patients.component.html',
   styleUrls: ['./patients.component.scss'],
-  providers : [PatientsService]
+  providers : [DBService, AuthService]
 })
 export class PatientsComponent implements OnInit, AfterViewInit {
 	//docID = 101;
-	docPro = { id: 101, name: "Dr Mathrabootham"};
+	//docPro = { id: 101, name: "Dr Mathrabootham"};
+	doctor: any;
 	docID;
+	docData;
 	query: any;
 	showPatientAdd : boolean;
 	patients: Array<any>;
@@ -31,14 +35,20 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 
 	@ViewChild('diagWrapper') diagWrapper;
 
-	constructor(private patientsService: PatientsService) { }
+	constructor(private dbService: DBService, private authService: AuthService, private router: Router) { }
 
 	ngAfterViewInit(){
 		//this.setPanelHeight();
 	}
 
 	ngOnInit() {
-		this.docID = this.docPro.id;
+		
+
+		this.doctor = this.authService.getDoc();
+		if(!this.doctor || !this.doctor._id)
+		  this.router.navigate(['/login']);
+
+		this.docID = this.doctor._id;
 
 		if(this.patient == undefined) this.patient = {};
 		this.getPatients();
@@ -56,9 +66,19 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		this.panelDim.width = this.diagWrapper.nativeElement.clientWidth;
 		this.panelDim.height = this.panelHeight;
 	}
-	addNewPatient(){
-		this.patient = {};
-		this.togglePatientAdd();
+	// addNewPatient(){
+	// 	this.patient = {};
+	// 	this.togglePatientAdd();
+	// }
+	addDocPatient(pat){
+		
+		this.docData.patients ? this.docData.patients.push(pat.patID) : this.docData.patients = [pat.patID];
+		console.log(this.doctor);
+		this.dbService.updateDoctor(this.docData).then(
+			result => {
+				this.doctor._rev = result.rev;
+				this.getPatients();
+			});
 	}
 	closePatientDetails({}){
 		this.patient = {};
@@ -76,7 +96,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		var patient = this.patient;
 		patient[data.key] = data.value;
 		console.log(patient, data);
-		this.patientsService.updatePatient(patient).then(
+		this.dbService.updatePatient(patient).then(
 			result => {
 				console.log('updated patient');
 				this.patient._rev = result.rev;
@@ -87,7 +107,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	}
 
 	searchPatients(e){
-		this.patientsService.searchPatient(e.target.value).then(
+		this.dbService.searchPatient(e.target.value).then(
 			result => {
 				console.log(result);
 			}, error => {
@@ -95,7 +115,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			});
 	}
 	getPatient(id){
-		this.patientsService.getPatient(id).then(result =>{
+		this.dbService.getPatient(id).then(result =>{
 			console.log(result);
 			this.patient = result;
 			if(result.diagnosis != undefined && result.diagnosis[this.docID]){			
@@ -126,13 +146,35 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		})
 	}
 	getPatients(){
-		this.patientsService.getPatients().then(result => {
-			 console.log('Result', result);
-			 this.patients = result.rows;
-			},
-			error => {
-				console.log("Error", error);
-			});
+		console.log(this.doctor);
+		this.dbService.getDoctor(this.docID).then(result => {
+			this.docData = result;
+			this.dbService.getPatients().then(result => {
+				let allPatients = result.rows;
+				this.patients = allPatients.filter(pat => {
+					var ind = this.docData.patients.indexOf(pat.id)
+				 	if(ind >= 0){
+				 		return true;
+				 	}else{
+				 		return false;
+				 	}
+				})
+			})
+		})
+		//let allPatients = this.db
+		// this.dbService.getPatients().then(result => {
+		// 	 console.log('Result', result);
+		// 	 let allpatients = result.rows;
+		// 	 console.log(this.doctor.patients);
+		// 	 this.patients = allpatients.filter(pat => {
+		// 	 	console.log(pat._id);
+		// 	 	return this.doctor.patients.indexOf(pat._id);
+		// 	 });
+		// 	 //this.patients = result.rows;
+		// 	},
+		// 	error => {
+		// 		console.log("Error", error);
+		// 	});
 	}
 	onDiagChange(){
 		this.selectedDiagData = this.diagnosis[this.selectedDiag];
@@ -145,7 +187,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			for(let moment of patient.diagnosis[this.docID][this.selectedDiag]){
 				if(moment.date == e.date) moment.text = e.text
 			}
-			this.patientsService.updatePatient(patient).then(
+			this.dbService.updatePatient(patient).then(
 				result => {
 					console.log('updated patients\'s text');
 					this.patient._rev = result.rev;
@@ -169,7 +211,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			
 			patient.diagnosis[this.docID][this.selectedDiag].push({date: new Date, text: e.text});
 			
-			this.patientsService.updatePatient(patient).then(
+			this.dbService.updatePatient(patient).then(
 				result => {
 					console.log('updated patient', result, this.patient);
 					this.patient._rev = result.rev;
@@ -204,7 +246,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	        }
 	    }
       
-      	this.patientsService.updatePatient(patient).then(
+      	this.dbService.updatePatient(patient).then(
         result => {
           console.log('patient updated');
           this.getPatient(this.patient._id);
@@ -229,7 +271,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	}
 	onRemoveAtt(docID, e){
 		e.stopPropagation();
-		this.patientsService.removeFile(docID, this.patient._id, this.patient._rev).then(
+		this.dbService.removePatientFile(docID, this.patient._id, this.patient._rev).then(
 	      result => {
 	      	console.log(result);
 	      	delete this.attachments[docID];

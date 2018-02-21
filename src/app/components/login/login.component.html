@@ -12,13 +12,14 @@
 	    			</div>
 	    		</div>
 	    		<div class="col-fifty">
-	    			<input class="inp-no-fancy" type="text" placeholder="Username"><br>
-	    			<input class="inp-no-fancy" type="password" placeholder="Password"><br>
+	    			<input class="inp-no-fancy" type="email" placeholder="Email" [(ngModel)]="doctor.email"><br>
+	    			<input class="inp-no-fancy" type="password" placeholder="Password" [(ngModel)]="doctor.password"><br>
 	    			<div class="row">
 	    				<div class="col-sm-12">
-	    					<button class="btn btn-primary login">Login</button>
+	    					<button class="btn btn-primary login" (click)="login(doctor)">Login</button>
 	    				</div>
 	    			</div>
+
 	    			<div class="other-actions">
 		    			<div class="row-percent">
 		    				<div class="col-fifty">

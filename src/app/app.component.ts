@@ -7,7 +7,8 @@ import { Router } from '@angular/router';
 })
 export class AppComponent {
 	constructor (private router:Router){}
-  title = 'app';
-  ngOnInit() {
-  }
+	title = 'app';
+  	ngOnInit() {
+
+	}
 }
