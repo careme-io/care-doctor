@@ -10,10 +10,14 @@
                     <div class="col-xs-2 col-md-2 ">
                         <div class="profile-pic-wrapper">
                         	<div class="image-wrapper">
-                        		<img src="" alt="profile-picture">
+                                <img *ngIf="!doctor.dp" width="100%" src="/assets/user.png" alt="profile-picture">
+                        		<img *ngIf="doctor.dp" width="100%" [attr.src]="'data:image/png;base64,' + doctor.dp" alt="profile-picture">
                         	</div>
                         </div>
-                        <a href="">Change picture</a>
+                        <br>
+                        <input class="btn btn-link" type="file" *ngIf="!doctor.dp" value="Set profile picture" (change)="setProfilePicture($event)">
+                        <input class="btn btn-link" type="file" *ngIf="doctor.dp" value="Change profile picture" (change)="setProfilePicture($event)">
+                       
                     </div>
                     <div class="col-xs-12 col-md-6 col-lg-6 col-xl-3">
                     	<label>DocID: 33299</label>

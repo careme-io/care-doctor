@@ -16,26 +16,55 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
 	this.doctor = this.authService.getDoc();
+
 	// if(!this.doctor || !this.doctor._id)
 	//   this.router.navigate(['/login']);
 	this.dbService.getDoctor(this.doctor._id).then(result => {
 		this.docData = result;
+		console.log(this.doctor);
 	})
 		
   }
 
-  updateDoctorData(data){
+  updateDocData(data){
   	var docData = this.docData;
   	docData[data.key] = data.value;
-  	//console.log(patient, data);
+  //console.log(patient, data);
   	this.dbService.updateDoctor(docData).then(
   		result => {
   			console.log('updated patient');
-  			this.doctor._rev = result.rev;
+  			this.docData._rev = result.rev;
   		}, error => {
   			console.log(error);
   		}
   	);
+  }
+
+  setProfilePicture($event){
+  	let dp = $event.target.files;
+  	//console.log(dp);
+
+		var docData:any = Object.assign({}, this.docData);
+
+		if(docData._attachments == undefined)
+        	docData._attachments = {};
+
+		//for(let i=0; i<this.patFiles.length; i++){
+        	
+        	docData._attachments['dp'] = {
+	          "dateTime": new Date(),
+	          "content_type" : dp[0].type,
+	          "data" : dp[0]
+	        }
+	   // }
+      console.log(docData);
+      	this.dbService.updateDoctor(docData).then(
+        result => {
+          console.log('dp updated', result);
+          this.docData._rev = result.rev;
+        }, error => {
+          console.error(error);
+        }); 
   }
 
 }

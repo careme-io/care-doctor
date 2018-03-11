@@ -28,7 +28,6 @@ import { StatusBarComponent } from './components/status-bar/status-bar.component
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
-import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -59,10 +58,7 @@ import { AgmCoreModule } from '@agm/core';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCKiuddTtmCj179fP6fnQeMOPKsNIJ9lms'
-    })
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
