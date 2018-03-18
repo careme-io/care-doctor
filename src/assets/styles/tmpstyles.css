@@ -67,6 +67,18 @@ input.disabled:hover, a.disabled:hover{
 	padding: 0px;
 	margin:0px;
 }
+.col-25p{
+	width:25%;
+	box-sizing: border-box;
+}
+.col-50p{
+	width:50%;
+	box-sizing: border-box;
+}
+.col-100p{
+	width:100%;
+	box-sizing: border-box;
+}
 .tri-col-left{
 	border-left:1px solid #ddd;
 }
@@ -100,6 +112,7 @@ input.disabled:hover, a.disabled:hover{
 	padding: 0px;
 	height: 100%;
 	overflow: hidden;
+	padding-bottom:27px;
 }
 .items-wrapper ul > li.item{
 	width: inherit;
@@ -109,6 +122,10 @@ input.disabled:hover, a.disabled:hover{
 }
 .items-wrapper ul > li.item:hover{
 	background-color:#f0f0f0;
+	cursor: pointer;
+}
+.items-wrapper ul > li.active{
+	background-color:#eee;
 	cursor: pointer;
 }
 .patients-list{
@@ -165,6 +182,9 @@ body.fixed-left .side-menu.left{
 
 #wrapper.enlarged .content-page{
 	margin-left: 50px;
+}
+#wrapper.enlarged .content-page.no-side{
+	margin-left: 0px;
 }
 
 .content-page > .content{

@@ -21,6 +21,10 @@
 		outline:none;
 		border-bottom: 1px solid #ddd;
 	}
+	input:hover{
+
+		text-decoration: underline;
+	}
 	.actions-row{
 		width:100%;
 		float:left;
@@ -38,4 +42,7 @@
 .inp-wrapper.active{
 	background: #f3f1e0;
 	height: auto;
+	input:hover{
+		text-decoration: none;
+	}
 }

@@ -12,24 +12,26 @@
 	    			</div>
 	    		</div>
 	    		<div class="col-fifty">
-	    			<input class="inp-no-fancy" type="email" placeholder="Email" [(ngModel)]="doctor.email"><br>
-	    			<input class="inp-no-fancy" type="password" placeholder="Password" [(ngModel)]="doctor.password"><br>
-	    			<div class="row">
-	    				<div class="col-sm-12">
-	    					<button class="btn btn-primary login" (click)="login(doctor)">Login</button>
-	    				</div>
-	    			</div>
-
-	    			<div class="other-actions">
-		    			<div class="row-percent">
-		    				<div class="col-fifty">
-		    					<a class="btn-link">Forgot Password?</a>
-		    				</div>
-		    				<div class="col-fifty">
-		    					<a class="btn-link pull-right">Questions?</a>
+	    			<form (ngSubmit)="login(sf)" #sf="ngForm">
+		    			<input class="inp-no-fancy" type="email" placeholder="Email" ngModel name="email"><br>
+		    			<input class="inp-no-fancy" type="password" placeholder="Password" ngModel name="password"><br>
+		    			<div class="row">
+		    				<div class="col-sm-12">
+		    					<button class="btn btn-primary login" type="submit">Login</button>
 		    				</div>
 		    			</div>
-		    		</div>
+
+		    			<div class="other-actions">
+			    			<div class="row-percent">
+			    				<div class="col-fifty">
+			    					<a class="btn-link">Forgot Password?</a>
+			    				</div>
+			    				<div class="col-fifty">
+			    					<a class="btn-link pull-right">Questions?</a>
+			    				</div>
+			    			</div>
+			    		</div>
+			    	</form>
 	    		</div>
 	    	</div>
     	</div>

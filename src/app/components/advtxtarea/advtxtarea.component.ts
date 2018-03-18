@@ -14,6 +14,7 @@ export class AdvtxtareaComponent implements OnChanges, OnInit {
 	@Input() txtValue : String;
 	@Input() date : any;
 	@Input() dim : any;
+	//@Input() pwidth: num
 	@Output() savedText = new EventEmitter<{}>();
 	@Output() updatedText = new EventEmitter<{}>();
 	public comtop;
@@ -27,8 +28,8 @@ export class AdvtxtareaComponent implements OnChanges, OnInit {
 	}
 
 	ngOnChanges(changes: SimpleChanges){
-
-	 
+		console.log('changes', changes);
+		this.comwidth = this.dim.width - 40;
 	}
 
 	saveText(txt){

@@ -1,7 +1,9 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
 import { DBService } from './../../services/db.service';
 import { AuthService } from './../../services/auth.service';
 import { Router } from '@angular/router';
+import { Patient } from '../../models/patient';
+import { Doctor } from '../../models/doctor';
 
 @Component({
   selector: 'app-patients',
@@ -12,13 +14,14 @@ import { Router } from '@angular/router';
 export class PatientsComponent implements OnInit, AfterViewInit {
 	//docID = 101;
 	//docPro = { id: 101, name: "Dr Mathrabootham"};
-	doctor: any;
+	doctor: Doctor;
 	docID;
+	docName;
 	docData;
 	query: any;
 	showPatientAdd : boolean;
 	patients: Array<any>;
-	patient: any = null;
+	patient: any = {};
 	patientText: any = {id: "", text: ""}
 	diagnosis: any;
 	files: Array<any>;
@@ -34,7 +37,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	@ViewChild('attBtn') attBtn: ElementRef;
 
 	@ViewChild('diagWrapper') diagWrapper;
-
+	@HostListener('window:resize') onResize() {this.setPanelHeight()}
 	constructor(private dbService: DBService, private authService: AuthService, private router: Router) { }
 
 	ngAfterViewInit(){
@@ -43,16 +46,20 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 
 	ngOnInit() {
 		
+		//this.authService.authRoute();
+		this.dbService.getDoctor().then(response => {
+			console.log(response);
+			this.doctor = response;
+			this.docName = this.doctor.doctor_name;
+			this.getPatients();
+			this.setPanelHeight();
+			
+		}).catch(err=>{console.log(err)});
+		
+		this.docID = localStorage.getItem('docID')
+		
 
-		this.doctor = this.authService.getDoc();
-		if(!this.doctor || !this.doctor._id)
-		  this.router.navigate(['/login']);
-
-		this.docID = this.doctor._id;
-
-		if(this.patient == undefined) this.patient = {};
-		this.getPatients();
-		this.setPanelHeight();
+		// if(this.patient == undefined) this.patient = {};
 		
 
 		//set diagnosis wrapper
@@ -63,6 +70,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		var winHeight = window.innerHeight;
 		console.log('wh', winHeight);
 		this.panelHeight = winHeight - 82;
+		this.panelDim = {};
 		this.panelDim.width = this.diagWrapper.nativeElement.clientWidth;
 		this.panelDim.height = this.panelHeight;
 	}
@@ -72,12 +80,15 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	// }
 	addDocPatient(pat){
 		
-		this.docData.patients ? this.docData.patients.push(pat.patID) : this.docData.patients = [pat.patID];
+		this.doctor.patients ? this.doctor.patients.push(pat.patID) : this.doctor.patients = [pat.patID];
 		console.log(this.doctor);
-		this.dbService.updateDoctor(this.docData).then(
+		this.dbService.updateDoctor(this.doctor).then(
 			result => {
-				this.doctor._rev = result.rev;
-				this.getPatients();
+				this.dbService.getDoctor().then(response => {
+					this.doctor = response;
+					this.getPatients();
+				});
+				
 			});
 	}
 	closePatientDetails({}){
@@ -100,6 +111,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			result => {
 				console.log('updated patient');
 				this.patient._rev = result.rev;
+				this.getPatients();
 			}, error => {
 				console.log(error);
 			}
@@ -127,7 +139,30 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			}
 			console.log(this.selectedDiagData);
 			this.patientText = {date:"", text:""};
-			this.attachments = this.patient._attachments;
+			let allAttachments = this.patient._attachments;
+			
+			// Object.keys(this.attachments).map(function(key, index) {
+			   
+			// });
+			this.attachments = {};
+			for(let key in allAttachments) {
+			    if(allAttachments.hasOwnProperty(key)) {
+			    	if(key.indexOf(this.docID) >= 0){
+			        	let label = key.replace(this.docID, '');
+			        	//console.log('value is ', allAttachments[key]);
+			        	this.attachments[label] = allAttachments[key];
+			        }
+			    }
+			}
+			console.log(this.attachments);
+
+			// this.attachments.forEach( att => {
+			// 	console.log(att)''
+			// })
+			// console.log(this.attachments);
+			// this.filteredAttachments = this.attachments.filter(att => {
+			// 	console.log("filtering ", att);
+			// });
 			// this.diagnosis.history = result.diagnosis[0].history;
 			// this.diagnosis.comments = result.diagnosis[0].comments;
 			// this.diagnosis.allergies = result.diagnosis[0].allergies;
@@ -147,34 +182,22 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	}
 	getPatients(){
 		console.log(this.doctor);
-		this.dbService.getDoctor(this.docID).then(result => {
-			this.docData = result;
+		//this.dbService.getPatients();
 			this.dbService.getPatients().then(result => {
+				console.log('got patients', result.rows)
 				let allPatients = result.rows;
 				this.patients = allPatients.filter(pat => {
-					var ind = this.docData.patients.indexOf(pat.id)
-				 	if(ind >= 0){
-				 		return true;
-				 	}else{
-				 		return false;
-				 	}
+					if(this.doctor && this.doctor.patients != undefined){
+						var ind = this.doctor.patients.indexOf(pat.id)
+					 	if(ind >= 0){
+					 		return true;
+					 	}else{
+					 		return false;
+					 	}
+					}
 				})
-			})
-		})
-		//let allPatients = this.db
-		// this.dbService.getPatients().then(result => {
-		// 	 console.log('Result', result);
-		// 	 let allpatients = result.rows;
-		// 	 console.log(this.doctor.patients);
-		// 	 this.patients = allpatients.filter(pat => {
-		// 	 	console.log(pat._id);
-		// 	 	return this.doctor.patients.indexOf(pat._id);
-		// 	 });
-		// 	 //this.patients = result.rows;
-		// 	},
-		// 	error => {
-		// 		console.log("Error", error);
-		// 	});
+			});
+		
 	}
 	onDiagChange(){
 		this.selectedDiagData = this.diagnosis[this.selectedDiag];
@@ -216,6 +239,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 					console.log('updated patient', result, this.patient);
 					this.patient._rev = result.rev;
 					this.patientText = {date:"", text:""};
+					this.getPatient(this.patient._id);
 				}, error => {
 					console.log(error);
 				}
@@ -237,10 +261,8 @@ export class PatientsComponent implements OnInit, AfterViewInit {
         	patient._attachments = {};
 
 		for(let i=0; i<this.patFiles.length; i++){
-        	let name = this.patFiles[i].name;
+        	let name = this.docID + this.patFiles[i].name;
         	patient._attachments[name] = {
-	          "appID" : 1,
-	          "dateTime": new Date(),
 	          "content_type" : this.patFiles[i].type,
 	          "data" : this.patFiles[i]
 	        }
@@ -269,12 +291,12 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		this.viewAttachment = false;
 		this.attachment = {};
 	}
-	onRemoveAtt(docID, e){
+	onRemoveAtt(attID, e){
 		e.stopPropagation();
-		this.dbService.removePatientFile(docID, this.patient._id, this.patient._rev).then(
+		this.dbService.removePatientFile(this.docID + attID, this.patient._id, this.patient._rev).then(
 	      result => {
 	      	console.log(result);
-	      	delete this.attachments[docID];
+	      	delete this.attachments[attID];
 	        this.patient._rev = result.rev;
 	        
 	      },

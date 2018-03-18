@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DBService } from '../../../services/db.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'patient-add',
@@ -16,18 +17,18 @@ export class PatientAddComponent implements OnInit {
 
 	constructor(private dbService: DBService) { }
 
-	ngOnInit() {
-		if(this.patient == undefined) this.patient = {};
-	}
-
+	ngOnInit() {}
 	closePatientAddForm(){
 		console.log('going to emit close');
 		this.closePatientAdd.emit({});
 	}
 
-	addPatient(){
+	addPatient(newPat: NgForm){
 	  // console.log('patient', this.patient);
-	  var patient:any = Object.assign({}, this.patient);
+	  var patient:any = Object.assign({}, newPat.value);
+	  patient.lat = 0;
+	  patient.long = 0;
+	  console.log(patient);
 		this.dbService.addPatient(patient).then(
 	    result => {
 	      console.log('patient added', result);
@@ -38,8 +39,11 @@ export class PatientAddComponent implements OnInit {
 	    });
 
 	}
-	addPatientClose(){
-	  var patient:any = Object.assign({}, this.patient);
+	addPatientClose(newPat: NgForm){
+	  var patient:any = Object.assign({}, newPat.value);
+	  patient.lat = 0;
+	  patient.long = 0;
+	  console.log(patient);
 		this.dbService.addPatient(patient).then(
 	    result => {
 	      console.log('patient added', result);

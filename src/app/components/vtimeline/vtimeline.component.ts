@@ -27,7 +27,6 @@ export class VtimelineComponent implements OnInit, AfterViewChecked {
 
 	ngAfterViewChecked(){
 		this.scrollToBottom();
-
 		this.timelineHeight = this.dim.height;
 	}
 

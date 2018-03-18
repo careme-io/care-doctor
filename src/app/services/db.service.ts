@@ -4,45 +4,76 @@ import PouchQuickSearch from 'pouchdb-quick-search'
 PouchDB.plugin(PouchQuickSearch)
 PouchDB.plugin(PouchFind)
 
+import { Doctor } from '../models/doctor';
+
+let remotePath = "http://159.89.169.255:8000/";
 
 let localDB = {
-  doctors	: 	new PouchDB('doctors'),
+  doctor	: 	new PouchDB('doctor'),
   patients	: 	new PouchDB('patients')
 };
 
 
 export class DBService {
 
+	/*** Sync  ***/
+	/***************/
+
+	pushDB(){
+		PouchDB.replicate('patients', "http://159.89.169.255:5984/patients", {
+			live: false,
+			retry: false
+		}).on('complete', function (info) {
+			  console.log('push complete', info)
+		}).on('error', function (err) {
+			  console.log('error ', err);
+		});
+		
+		PouchDB.replicate('doctor', "http://159.89.169.255:5984/userprofile", {
+			live: false,
+			retry: false,
+		}).on('complete', function (info) {
+			  console.log('push complete', info);
+		}).on('error', function (err) {
+			  console.log('error ', err);
+		});
+	}
+
 	/*** Doctor  ***/
 	/***************/
 	getDoctors(){
-		return localDB.doctors.allDocs({ include_docs: true });
+		return localDB.doctor.allDocs({ include_docs: true });
 	}
-	getDoctor(id){
-		var doctor = localDB.doctors.get(id, {attachments: true});
+	getDoctor(): Promise<Doctor>{
+		let docID = localStorage.getItem('docID');
+		let doctor = localDB.doctor.get(docID);
+		console.log('frm pouch doc', doctor)
 		return doctor;
 	}
 	getDocFrmEmail(data){
-		return localDB.doctors.find({
+		return localDB.doctor.find({
 		  selector: {email: data}	
 		})
 	}
-	addDoctor(doc){			
-		doc._id = 'doc'+doc.name;
-		return localDB.doctors.put(doc);
+	addDoctor(doc){
+		if(doc.email){			
+			doc._id = doc.email;
+			return localDB.doctor.put(doc);
+		}
 	}
 	updateDoctor(doc){
 		console.log(doc);
-		return localDB.doctors.put(doc)
+		return localDB.doctor.put(doc)
 	}
 	// addDocPatient(doc){
-	// 	return localDB.doctors.put(doc);
+	// 	return localDB.doctor.put(doc);
 	// }
 
 	/*** Patient. ***/
 	/****************/
 
 	getPatients(){
+
 		return localDB.patients.allDocs({ include_docs: true });
 	}
 	getPatient(id){
@@ -50,11 +81,11 @@ export class DBService {
 		return patient;
 	}
 	addPatient(patient){			
-		patient._id = 'pat'+patient.name+patient.phone;
+		patient._id = patient.phone;
 		return localDB.patients.put(patient);
 	}
-	removePatientFile(docID, patID, rev){
-		return localDB.patients.removeAttachment(patID, docID, rev);
+	removePatientFile(attID, patID, rev){
+		return localDB.patients.removeAttachment(patID, attID, rev);
 	}
 	updatePatient(patient){
 		return localDB.patients.put(patient)

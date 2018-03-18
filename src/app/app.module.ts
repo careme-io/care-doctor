@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
@@ -13,7 +14,6 @@ import { MapsComponent } from './components/maps/maps.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
-import { PatientDetailComponent } from './components/patients/patient-detail/patient-detail.component';
 import { objNgFor } from './pipes/objNgFor.pipe';
 import { search } from './pipes/search.pipe';
 import { inArray } from './pipes/inArray.pipe';
@@ -28,6 +28,9 @@ import { StatusBarComponent } from './components/status-bar/status-bar.component
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
+import { LauncherComponent } from './components/header/launcher/launcher.component';
+import { MainMenuComponent } from './components/main-menu/main-menu.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 @NgModule({
@@ -39,7 +42,6 @@ import { DoctorsComponent } from './components/doctors/doctors.component';
     NavbarComponent,
     PatientsComponent,
     MapsComponent,
-    PatientDetailComponent,
     objNgFor,
     search,
     InptxtComponent,
@@ -52,13 +54,19 @@ import { DoctorsComponent } from './components/doctors/doctors.component';
     StatusBarComponent,
     LoginComponent,
     ProfileComponent,
-    DoctorsComponent
+    DoctorsComponent,
+    LauncherComponent,
+    MainMenuComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AgmCoreModule.forRoot({
+     apiKey: 'AIzaSyCKiuddTtmCj179fP6fnQeMOPKsNIJ9lms'
+   })
   ],
   providers: [],
   bootstrap: [AppComponent]

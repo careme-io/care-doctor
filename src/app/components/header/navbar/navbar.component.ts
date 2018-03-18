@@ -8,7 +8,6 @@ import { Component, OnInit, Input } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
 	@Input() currPage: String;
-	@Input() docName: String;
 
   constructor() { }
 

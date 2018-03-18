@@ -6,7 +6,7 @@
     [files]="files">
 </patient-detail> -->
 <!-- <app-header [currPage]="this.router.url"></app-header> -->
-<app-header [docName]="doctor.name"></app-header>
+<app-header [docName]="docName"></app-header>
 <div class="wrapper">
     <patient-add
         [docID] = "docID"
@@ -14,10 +14,10 @@
         (addedPatient) = "addDocPatient($event)"
         (closePatientAdd)="closePatientAdd()"
     ></patient-add>
-    <div class="content-page" (window:resize)="setPanelHeight()" [style.height.px]="panelHeight - 10">
+    <div class="content-page no-side" (window:resize)="setPanelHeight()" [style.height.px]="panelHeight - 10">
         <div class="content tight">
             <div class="row tri-col-wrapper" >
-                <div class="col-md-3 tri-col tri-col-left" [style.height.px]="panelHeight" style="overflow: hidden;">
+                <div class="col-25p tri-col tri-col-left" [style.height.px]="panelHeight + 12" style="overflow: hidden;">
                     <div class="items-search-wrapper">
                         <div class="input-group">
                         <div class="input-group-addon">
@@ -29,21 +29,20 @@
                     </div>
                     <div class="items-wrapper">
                         <ul class="patients-list" [style.height.px]="panelHeight" style="overflow:scroll;">
-                           <li class="item"
-                            *ngFor="let patient of patients | search:'name,phone':query" 
-                            (click)="getPatient(patient.id)">
+                           <li class="item" [ngClass]="{'active': pat.id == patient._id}"
+                            *ngFor="let pat of patients | search:'name,phone':query" 
+                            (click)="getPatient(pat.id)">
                                 <i class="fa fa-user"></i>
-                                <span class="pat-name">{{patient.doc.name}}</span>
+                                <span class="pat-name">{{pat.doc.name}}</span>
                             </li>
                         </ul>
 
                         
                     </div>
                 </div>
-                <div class="col-md-6 tri-col tri-col-mid diagnosis-col">
+                <div class="col-50p tri-col tri-col-mid diagnosis-col">
                     <div class="col-header">
-                        <div class="row">
-                            <div class="col-md-5">
+                        
                                 <div class="input-group select-section">
                                     <span class="input-group-addon">View patient's</span>
                                     <select name="diDataSel" id="" class="form-control" (change)="onDiagChange()" [(ngModel)]="selectedDiag">
@@ -52,10 +51,9 @@
                                         <option value="history">history</option>
                                     </select>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
+                            
+                        
+                            <div class="col-100p">
                                 <div class="diagnosis-wrapper" #diagWrapper>
                                     <h5>{{selectedDiag}}</h5>
                                     <vtimeline
@@ -72,18 +70,16 @@
                                     ></advtxtarea>
                                 </div>
                             </div>
-                        </div>
+                        
                     </div>
                 </div>
-                <div class="col-md-3 tri-col tri-col-right patient-meta-col">
+                <div class="col-25p tri-col tri-col-right patient-meta-col">
                     <div class="patient-meta-wrapper">
-                        <div class="row">
-                            <div class="col-sm-12">
+                        
                                 <h4 class="header-title">Patient Information</h4>
-                            </div>
-                        </div>
-                        <div [hidden]="patient.name == undefined" class="row">
-                            <div class="col-sm-12">
+                            
+                        <div [hidden]="patient.name == undefined" class="">
+                            <div class="col-100p">
                                 <inptxt 
                                     label = "Name"
                                     key = "name"
@@ -127,7 +123,7 @@
                                     (changedDetail)="updatePatientData($event)"
                                 ></inptxt>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-100p">
                                 <div class="attachments-wrapper">
                                     <label>Attachments</label>
                                 <button (click)="addAttachment()" class="btn-link btn-att"><i class="fa fa-paperclip"></i> Add Attachments</button>
@@ -179,4 +175,4 @@
         </div>
     </div>
 </div>
-<status-bar [docName]="doctor.name"></status-bar>
+<status-bar [docName]="docName"></status-bar>
