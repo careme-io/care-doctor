@@ -17,7 +17,7 @@
 		    			<input class="inp-no-fancy" type="password" placeholder="Password" ngModel name="password"><br>
 		    			<div class="row">
 		    				<div class="col-sm-12">
-		    					<button class="btn btn-primary login" type="submit">Login</button>
+		    					<button class="btn btn-primary login" type="submit" [disabled]="loggingIn">Login</button>
 		    				</div>
 		    			</div>
 

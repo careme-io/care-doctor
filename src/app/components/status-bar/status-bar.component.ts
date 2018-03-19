@@ -17,11 +17,16 @@ export class StatusBarComponent implements OnInit {
   }
 
   syncDB(){
-  	this.dbService.pushDB();
+  	this.dbService.syncDB();
   }
 
   pullDB(){
-  	this.dbService.pushDB();
+      this.dbService.getDoctor().then(doctor => {
+          console.log(doctor)
+            // doc_pdoctor.patients;
+            //console.log(doc_patients);
+  	        this.dbService.pullDB(doctor.patients);
+      });
   }
 
   pushDB(){

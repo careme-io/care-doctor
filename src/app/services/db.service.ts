@@ -39,6 +39,26 @@ export class DBService {
 		});
 	}
 
+	pullDB(doc_patients){
+		//let doc_patients;
+		
+
+	        PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
+	        doc_ids: doc_patients,
+	        live: false,
+	        retry: false,
+	        
+	        }).on('complete', function (info) {
+	            console.log('patient pull complete', info);
+	        }).on('error', function (err) {
+	            console.log('error ', err);
+	        });
+	}
+
+	syncDB(){
+		console.log("Sync db call");
+	}
+
 	/*** Doctor  ***/
 	/***************/
 	getDoctors(){

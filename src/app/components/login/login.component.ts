@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   // doctor: Doctor;
   // creds;
+  loggingIn:boolean = false;
 
   constructor(private dbService: DBService, private authService: AuthService, private router: Router) { }
 
@@ -26,6 +27,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(sForm: NgForm){
+        this.loggingIn = true;
        this.authService.authDoc({email: sForm.value.email, password: sForm.value.password});	
   }
 
