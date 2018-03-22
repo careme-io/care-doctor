@@ -3,7 +3,9 @@ import PouchDB from 'pouchdb'
 // PouchDB.plugin(PouchQuickSearch)
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpRequest } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { 
+	Router 
+} from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 // import { ErrorObservable } from 'rxjs/observable/ErrorObservable';
 // import { catchError, retry } from 'rxjs/operators';
@@ -29,7 +31,7 @@ const httpOptions = {
 @Injectable()
 
 
-export class AuthService {
+export class AuthService{
 
 	public token: string;
 	private remotePath = "http://159.89.169.255:8000/";
@@ -38,8 +40,7 @@ export class AuthService {
 	constructor(private http: HttpClient,private router: Router, private dbService: DBService){
 		//var loggedDoctor = JSON.parse(localStorage.getItem('thisDoctor'));
 		//this.token = loggedDoctor && loggedDoctor.token || 'aabbccdd';
-	}
-	authDoc(creds){
+	}	authDoc(creds){
 		
 		return this.http.post<Doctor>(this.remotePath + 'get_token', creds).subscribe( response => {
 			if(response.token) {

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { DBService } from './../../services/db.service';
 
+
 @Component({
   selector: 'status-bar',
   templateUrl: './status-bar.component.html',

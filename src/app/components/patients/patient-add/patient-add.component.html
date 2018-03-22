@@ -43,7 +43,21 @@
 		                    <input type="text" name="city" ngModel class="form-control">
 		                </div>
 		            </div> 
-		            <button type="submit" class="btn btn-primary">Add</button>
+		            <div class="row" style="transition-duration: 500ms; z-index: 10003;" >
+		                <div class="col-sm-12">
+		                    <div class="row patient-actions">
+		                        <div class="col-sm-9 col-sm-offset-2">
+		                                <button type="submit" class="btn btn-primary pull-right">Add</button>	
+		                                	<!-- <button *ngIf="!patient._id" class="btn btn-primary" (click)="addPatient()">Add Another</button> -->
+		                                <!-- {{/if}} -->
+		                            <!-- <button class="btn btn-link pull-right" 
+		                            	(click)="closePatientAddForm()">Close
+		                            </button> -->
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		            
 		        </form>
 	        </div>
 	    </div>

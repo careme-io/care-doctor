@@ -6,22 +6,27 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './services/authGuard.service';
 
 const routes: Routes = [
     {
         path: '',
+        canActivate: [AuthGuard],
         component: HomeComponent
     },
     {
     	path: 'patients',
+        canActivate: [AuthGuard],
     	component: PatientsComponent
     },
     {
         path: 'maps',
+        canActivate: [AuthGuard],
         component: MapsComponent
     },
     {
     	path: 'profile',
+        canActivate: [AuthGuard],
     	component: ProfileComponent
     },
     {

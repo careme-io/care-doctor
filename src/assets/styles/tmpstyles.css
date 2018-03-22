@@ -98,7 +98,7 @@ input.disabled:hover, a.disabled:hover{
 }
 .patient-meta-col{
 	background-color:#fefefe;
-	padding:10px;
+	/*padding:10px;*/
 }
 .patient-meta-wrapper{
 	width: 100%;
@@ -134,6 +134,9 @@ input.disabled:hover, a.disabled:hover{
 }
 .items-search-wrapper{
 	border-bottom: 1px solid #eee;
+}
+.items-search-wrapper .search-icon{
+	padding-top: 10px;
 }
 .items-search-wrapper .input-group-addon, .select-section .input-group-addon{
 	background: #fefefe;

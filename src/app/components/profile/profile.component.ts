@@ -9,7 +9,7 @@ import { DBService } from './../../services/db.service'
   providers: [AuthService, DBService]
 })
 export class ProfileComponent implements OnInit {
-	doctor: any;
+	doctor: any = {};
 	docID: any;
   docName;
 
@@ -28,10 +28,6 @@ export class ProfileComponent implements OnInit {
   this.dbService.getDoctor().then(response => {
     console.log(response);
     this.doctor = response;
-    // if(this.doctor._attachments == undefined || this.doctor._attachments.dp == undefined){
-    //   this.doctor._attachments = [];
-    //   this.doctor._attachments.dp = "";
-    // }
     this.docName = this.doctor.doctor_name;
     
   }).catch(err=>{console.log(err)});
@@ -47,6 +43,7 @@ export class ProfileComponent implements OnInit {
   	this.dbService.updateDoctor(docData).then(
   		result => {
   			this.doctor._rev = result.rev;
+        this.dbService.pushDB();
   		}, error => {
   			console.log(error);
   		}

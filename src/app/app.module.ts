@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpModule } from '@angular/http';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -31,6 +32,7 @@ import { DoctorsComponent } from './components/doctors/doctors.component';
 import { LauncherComponent } from './components/header/launcher/launcher.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { AgmCoreModule } from '@agm/core';
+import { AuthGuard } from './services/authGuard.service';
 
 
 @NgModule({
@@ -64,11 +66,12 @@ import { AgmCoreModule } from '@agm/core';
     HttpClientModule,
     HttpModule,
     AppRoutingModule,
+    ToastModule.forRoot(),
     AgmCoreModule.forRoot({
      apiKey: 'AIzaSyCKiuddTtmCj179fP6fnQeMOPKsNIJ9lms'
    })
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

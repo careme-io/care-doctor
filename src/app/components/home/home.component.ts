@@ -28,19 +28,30 @@ export class HomeComponent implements OnInit {
     this.dbService.getDoctor().then(response => {
       console.log(response);
       this.doctor = response;
+      this.getPatients();
     }).catch(err=>{console.log(err)});
     
     this.docID = localStorage.getItem('docID')
+
   }
 
+  
   getPatients(){
-		this.dbService.getPatients().then(result => {
-			 console.log('Result', result);
-			 this.patients = result.rows;
-			},
-			error => {
-				console.log("Error", error);
-			});
-	}
+    this.dbService.getPatients().then(result => {
+      console.log('got patients', result.rows)
+      let allPatients = result.rows;
+      this.patients = allPatients.filter(pat => {
+        if(this.doctor && this.doctor.patients != undefined){
+          var ind = this.doctor.patients.indexOf(pat.id)
+           if(ind >= 0){
+             return true;
+           }else{
+             return false;
+           }
+        }
+      })
+    });
+    
+  }
 
 }

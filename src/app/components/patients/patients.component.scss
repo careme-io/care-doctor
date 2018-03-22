@@ -1,6 +1,9 @@
 .patient-meta-col{
 	/*background-color: red;*/
 }
+.patient-meta-wrapper{
+    padding:10px;
+}
 
 .btn-add-pat{
 	padding-top: 3px;
@@ -35,6 +38,10 @@ ul.patients-list{
 	.btn-att{
 		margin-left:20px;
 	}
+}
+
+.dull{
+	filter: brightness(90%);
 }
 
 .attachments-list-wrapper{	

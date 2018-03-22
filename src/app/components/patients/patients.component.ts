@@ -110,6 +110,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		this.dbService.updatePatient(patient).then(
 			result => {
 				console.log('updated patient');
+				this.dbService.pushDB();
 				this.patient._rev = result.rev;
 				this.getPatients();
 			}, error => {
@@ -181,22 +182,20 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		})
 	}
 	getPatients(){
-		console.log(this.doctor);
-		//this.dbService.getPatients();
-			this.dbService.getPatients().then(result => {
-				console.log('got patients', result.rows)
-				let allPatients = result.rows;
-				this.patients = allPatients.filter(pat => {
-					if(this.doctor && this.doctor.patients != undefined){
-						var ind = this.doctor.patients.indexOf(pat.id)
-					 	if(ind >= 0){
-					 		return true;
-					 	}else{
-					 		return false;
-					 	}
-					}
-				})
-			});
+		this.dbService.getPatients().then(result => {
+			console.log('got patients', result.rows)
+			let allPatients = result.rows;
+			this.patients = allPatients.filter(pat => {
+				if(this.doctor && this.doctor.patients != undefined){
+					var ind = this.doctor.patients.indexOf(pat.id)
+				 	if(ind >= 0){
+				 		return true;
+				 	}else{
+				 		return false;
+				 	}
+				}
+			})
+		});
 		
 	}
 	onDiagChange(){

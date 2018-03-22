@@ -20,9 +20,9 @@
                 <div class="col-25p tri-col tri-col-left" [style.height.px]="panelHeight + 12" style="overflow: hidden;">
                     <div class="items-search-wrapper">
                         <div class="input-group">
-                        <div class="input-group-addon">
-                            <i class="fa fa-search"></i>
-                        </div>
+                            <div class="input-group-addon search-icon">
+                                <i class="fa fa-search"></i>
+                            </div>
                         <input [(ngModel)]="query" type="text" class="form-control search-input" placeholder="Search patients">
                         <button class="btn-link btn-add-pat" (click)="togglePatientAdd()"><i class="fa fa-plus-circle"></i> Patient</button>
                     </div>
@@ -40,7 +40,7 @@
                         
                     </div>
                 </div>
-                <div class="col-50p tri-col tri-col-mid diagnosis-col">
+                <div class="col-50p tri-col tri-col-mid diagnosis-col" [ngClass]="{'dull': !patient.phone}">
                     <div class="col-header">
                         
                                 <div class="input-group select-section">
@@ -73,7 +73,7 @@
                         
                     </div>
                 </div>
-                <div class="col-25p tri-col tri-col-right patient-meta-col">
+                <div class="col-25p tri-col tri-col-right patient-meta-col" [ngClass]="{'dull': !patient.phone}">
                     <div class="patient-meta-wrapper">
                         
                                 <h4 class="header-title">Patient Information</h4>
@@ -130,16 +130,7 @@
                                 <input class="btn-link" type="file" name="files" class="form-control" multiple (change)="filesSelected($event)" [hidden]="true" #attBtn>
                                 </div>
                             </div>
-                            <div class="attachments-list-wrapper" [style.height.px]="panelHeight - 315">
-                                
-                                
-                                    <ul>
-                                        <li *ngFor="let att of attachments | objNgFor" (click)="viewAtt(att)">
-                                            <div class="att-item">{{att}} <span class="rmv-btn"><i (click)="onRemoveAtt(att, $event)" class="fa fa-times-circle"></i></span></div>
-                                        </li>
-                                    </ul>
-                                
-                            </div>
+                            
                             
                             <att-viewer 
                                 *ngIf="viewAttachment"
@@ -169,6 +160,16 @@
                                 </div>
                             </div>
                         </div> -->
+                    </div>
+                    <div class="attachments-list-wrapper" [style.height.px]="panelHeight - 315">
+                        
+                        
+                            <ul>
+                                <li *ngFor="let att of attachments | objNgFor" (click)="viewAtt(att)">
+                                    <div class="att-item">{{att}} <span class="rmv-btn"><i (click)="onRemoveAtt(att, $event)" class="fa fa-times-circle"></i></span></div>
+                                </li>
+                            </ul>
+                        
                     </div>
                 </div>
             </div>
