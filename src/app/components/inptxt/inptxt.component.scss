@@ -3,7 +3,7 @@
 	width:100%;
 	padding:10px;
 	margin-bottom:5px;
-	height:30px;
+	height:46px;
 	overflow:hidden;
 	border-radius: 4px;
 	label{
@@ -22,8 +22,9 @@
 		border-bottom: 1px solid #ddd;
 	}
 	input:hover{
-		color: #5bb2f6;
-		text-decoration: underline;
+		// color: #5bb2f6;
+		// background: #efefef;
+		// text-decoration: underline;
 		//background:#cedede;
 	}
 	.actions-row{
@@ -40,6 +41,9 @@
 		}
 	}
 	
+}
+.inp-wrapper:hover{
+	background: #efefef;
 }
 .inp-wrapper.active{
 	background: #f3f1e0;

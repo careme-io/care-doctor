@@ -46,16 +46,16 @@
                                 <div class="input-group select-section">
                                     <span class="input-group-addon">View patient's</span>
                                     <select name="diDataSel" id="" class="form-control" (change)="onDiagChange()" [(ngModel)]="selectedDiag">
-                                        <option value="allergies">allergies</option>
-                                        <option value="comments">comments</option>
-                                        <option value="history">history</option>
+                                        <option value="allergies">Allergies</option>
+                                        <!-- <option value="comments">comments</option> -->
+                                        <option value="history">History</option>
                                     </select>
                                 </div>
                             
                         
                             <div class="col-100p">
                                 <div class="diagnosis-wrapper" #diagWrapper>
-                                    <h5>{{selectedDiag}}</h5>
+                                    <h5 class="selected-title">{{selectedDiag}}</h5>
                                     <vtimeline
                                         [dim] = "panelDim"
                                         [moments] = "selectedDiagData"
@@ -89,6 +89,7 @@
                                 <inptxt 
                                     label = "Phone"
                                     key = "phone"
+                                    readonly = "readonly"
                                     [inpValue] = "patient.phone"
                                     (changedDetail)="updatePatientData($event)"
                                 ></inptxt>
@@ -166,7 +167,7 @@
                         
                             <ul>
                                 <li *ngFor="let att of attachments | objNgFor" (click)="viewAtt(att)">
-                                    <div class="att-item">{{att}} <span class="rmv-btn"><i (click)="onRemoveAtt(att, $event)" class="fa fa-times-circle"></i></span></div>
+                                    <div class="att-item">{{att}} <span class="rmv-btn" (click)="onRemoveAtt(att, $event)" ><i class="fa fa-times-circle"></i></span></div>
                                 </li>
                             </ul>
                         

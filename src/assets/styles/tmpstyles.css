@@ -96,6 +96,9 @@ input.disabled:hover, a.disabled:hover{
 .diagnosis-wrapper{
 	padding:10px;
 }
+.diagnosis-col{
+	background: #f5f5f5;
+}
 .patient-meta-col{
 	background-color:#fefefe;
 	/*padding:10px;*/

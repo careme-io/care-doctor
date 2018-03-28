@@ -42,8 +42,15 @@ export class ProfileComponent implements OnInit {
    console.log('doctor', docData);
   	this.dbService.updateDoctor(docData).then(
   		result => {
-  			this.doctor._rev = result.rev;
+  			//this.doctor._rev = result.rev;
         this.dbService.pushDB();
+
+        this.dbService.getDoctor().then(response => {
+          console.log(response);
+          this.doctor = response;
+          this.docName = this.doctor.doctor_name;
+          
+        }).catch(err=>{console.log(err)});
   		}, error => {
   			console.log(error);
   		}

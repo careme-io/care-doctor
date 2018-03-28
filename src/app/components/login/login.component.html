@@ -1,18 +1,18 @@
 <div class="wrapper">
-    <div class="centered-content">
+    <div class="centered-content" [ngClass]="{'first': loading}">
     	<div class="login-wrapper container">
     		<div class="row-percent">
 	    		<div class="col-fifty logo-wrapper">
 	    			<div class="applogo">
-	    				<h1><img src="/assets/cmlogo-160p.png" alt=""></h1>
-	    				<p style="margin-top:40px;">Haven't register yet? Please signup from the below link. 
-						<br><a href="http://www.careme.io">www.careme.io</a>
+	    				<h1><img src="./assets/cmlogo-160p.png" alt=""></h1>
+	    				<p>Haven't register yet or <br> having login issues? <br>Kindly visit 
+							<a href="http://www.careme.io">careme.io</a>
 	    				</p>
-	    				
 	    			</div>
 	    		</div>
-	    		<div class="col-fifty">
-	    			<form (ngSubmit)="login(sf)" #sf="ngForm">
+	    		<div class="col-fifty login-form">
+	    			<!-- <form (ngSubmit)="login(sf)" #sf="ngForm">
+	    				<p class="error-message"> &nbsp; {{errorMessage}}</p>
 		    			<input class="inp-no-fancy" type="email" placeholder="Email" ngModel name="email"><br>
 		    			<input class="inp-no-fancy" type="password" placeholder="Password" ngModel name="password"><br>
 		    			<div class="row">
@@ -20,6 +20,16 @@
 		    					<button class="btn btn-primary login" type="submit" [disabled]="loggingIn">Login</button>
 		    				</div>
 		    			</div>
+			    	</form> -->
+			    	<form (ngSubmit)="login()" [formGroup]="loginForm">
+			    		<p class="error-message"> &nbsp; {{errorMessage}}</p>
+			    		<input class="inp-no-fancy" type="email" placeholder="Email" formControlName="email"><br>
+			    		<input class="inp-no-fancy" type="password" placeholder="Password" formControlName="password"><br>
+			    		<div class="row">
+			    			<div class="col-sm-12">
+			    				<button class="btn btn-primary login" type="submit" [disabled]="!loginForm.valid">Login</button>
+			    			</div>
+			    		</div>
 			    	</form>
 	    		</div>
 	    	</div>

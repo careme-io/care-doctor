@@ -1,7 +1,7 @@
 <div class="inp-wrapper" [ngClass]="{'active': state == 'active' || state == 'dirty'}">
 	<div class="data-row" (click)="onFocus()">
 		<label for="{{label+key}}">{{label}}</label>
-		<input id="{{label+key}}" type="text" [(ngModel)]="inpValue" (keyup)="onKeyPressed($event)">
+		<input id="{{label+key}}" type="text" [(ngModel)]="inpValue" (keyup)="onKeyPressed($event)" [readonly]="readonly">
 	</div>
 	<div class="actions-row" [hidden]="state != 'dirty'"> 
 		<button class="pull-right btn-success" (click)="saveChanges()"><i class="fa fa-check"></i></button>

@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 import { Doctor } from './../models/doctor';
 import {  DBService } from './db.service';
 
+import { catchError, retry, tap } from 'rxjs/operators';
  
 
 // let localDB = {
@@ -40,49 +41,92 @@ export class AuthService{
 	constructor(private http: HttpClient,private router: Router, private dbService: DBService){
 		//var loggedDoctor = JSON.parse(localStorage.getItem('thisDoctor'));
 		//this.token = loggedDoctor && loggedDoctor.token || 'aabbccdd';
-	}	authDoc(creds){
+	}	
+	authDoc(creds){
 		
-		return this.http.post<Doctor>(this.remotePath + 'get_token', creds).subscribe( response => {
-			if(response.token) {
+		return this.http.post<Doctor>(this.remotePath + 'get_token', creds).pipe(
+			tap( response => {
+				if(response.token){
+					let doc_patients;
+					var db = this.dbService;
+					var router = this.router;
 
-				let doc_patients;
-				var db = this.dbService;
-				var router = this.router;
+					localStorage.setItem('authToken', response.token);
+					localStorage.setItem('docID', response.email);
 
-				localStorage.setItem('authToken', response.token);
-				localStorage.setItem('docID', response.email);
+					PouchDB.replicate('http://159.89.169.255:5984/userprofile', "doctor", {
+	                filter: function (doc) {
+	                    return doc.email === creds.email;
+	                },
+	                live: false,
+	                retry: false,
+	                
+	                }).on('complete', function (info) {
+	                	db.getDoctor().then(doctor => {
+		                	console.log(doctor)
+		                    doc_patients = doctor.patients;
+		                    console.log(doc_patients);
 
-				PouchDB.replicate('http://159.89.169.255:5984/userprofile', "doctor", {
-                filter: function (doc) {
-                    return doc.email === creds.email;
-                },
-                live: false,
-                retry: false,
+		                    PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
+		                    doc_ids: doc_patients,
+		                    live: false,
+		                    retry: false,
+		                    
+		                    }).on('complete', function (info) {
+		                        console.log('patient push complete', info);
+		                        router.navigate(['/']);
+		                    }).on('error', function (err) {
+		                        console.log('error ', err);
+		                    });
+	                	});
+	                	console.log('doctor push complete', info);
+	                }).on('error', function (err) {
+	                    console.log('error ', err);
+	                });
+	            }
+			})
+		);
+		// return this.http.post<Doctor>(this.remotePath + 'get_token', creds).subscribe( response => {
+		// 	if(response.token) {
+
+		// 		let doc_patients;
+		// 		var db = this.dbService;
+		// 		var router = this.router;
+
+		// 		localStorage.setItem('authToken', response.token);
+		// 		localStorage.setItem('docID', response.email);
+
+		// 		PouchDB.replicate('http://159.89.169.255:5984/userprofile', "doctor", {
+  //               filter: function (doc) {
+  //                   return doc.email === creds.email;
+  //               },
+  //               live: false,
+  //               retry: false,
                 
-                }).on('complete', function (info) {
-                	db.getDoctor().then(doctor => {
-	                	console.log(doctor)
-	                    doc_patients = doctor.patients;
-	                    console.log(doc_patients);
+  //               }).on('complete', function (info) {
+  //               	db.getDoctor().then(doctor => {
+	 //                	console.log(doctor)
+	 //                    doc_patients = doctor.patients;
+	 //                    console.log(doc_patients);
 
-	                    PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
-	                    doc_ids: doc_patients,
-	                    live: false,
-	                    retry: false,
+	 //                    PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
+	 //                    doc_ids: doc_patients,
+	 //                    live: false,
+	 //                    retry: false,
 	                    
-	                    }).on('complete', function (info) {
-	                        console.log('patient push complete', info);
-	                        router.navigate(['/']);
-	                    }).on('error', function (err) {
-	                        console.log('error ', err);
-	                    });
-                	});
-                    console.log('doctor push complete', info);
-                }).on('error', function (err) {
-                    console.log('error ', err);
-                });
-			}
-		});
+	 //                    }).on('complete', function (info) {
+	 //                        console.log('patient push complete', info);
+	 //                        router.navigate(['/']);
+	 //                    }).on('error', function (err) {
+	 //                        console.log('error ', err);
+	 //                    });
+  //               	});
+  //                   console.log('doctor push complete', info);
+  //               }).on('error', function (err) {
+  //                   console.log('error ', err);
+  //               });
+		// 	}
+		// });
 	}
 
 	authRoute(){

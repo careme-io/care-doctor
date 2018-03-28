@@ -1,6 +1,6 @@
 {
   "name": "care-doctor",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
@@ -11,8 +11,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "electron .",
-    "electron-run": "ng serve && electron .",
-    "electron-build": "ng build --env=prod && electron ."
+    "electron-run": "ng build && electron .",
+    "electron-build": "ng build --env=prod && electron .",
+    "dist": "ng build && build"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +44,7 @@
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "electron": "^1.7.9",
+    "electron-builder": "^20.6.2",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.7.0",
@@ -55,5 +57,26 @@
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2"
+  },
+  "build": {
+    "appId": "com.careme.doctor",
+    "files": [
+      "main.js",
+      "build"
+    ],
+    "mac": {
+      "category": "productivity"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    }
   }
 }

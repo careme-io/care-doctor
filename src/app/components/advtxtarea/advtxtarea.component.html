@@ -5,7 +5,7 @@
 
 	</div>
 	<div class="actions-wrapper">
-		<button *ngIf="!date" class="pull-right btn btn-sm btn-success" (click)="saveText(txtarea.value)" >Save</button>
+		<button [disabled]="txtValue.length < 1" *ngIf="!date" class="pull-right btn btn-sm btn-success" (click)="saveText(txtarea.value)" >Save</button>
 		<button *ngIf="date" class="pull-right btn btn-sm btn-success" (click)="updateText(txtarea.value)">Update</button>
 	</div>			
 </div>

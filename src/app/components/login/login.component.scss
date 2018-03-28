@@ -1,5 +1,7 @@
 .wrapper{
-
+}
+.loading{
+	cursor: wait;
 }
 .centered-content{
 	position: absolute;
@@ -30,6 +32,14 @@ input.inp-no-fancy:focus{
 	width:600px;
 	height:300px;
 	overflow:hidden;
+	.login-form{
+		margin-top:20px;
+		.error-message{
+			color: #ee5555;
+			position: relative;
+			margin-top: -20px;
+		}
+	}
 	//margin-top:200px;
 	input{
 		width:100%;

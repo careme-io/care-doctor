@@ -86,6 +86,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			result => {
 				this.dbService.getDoctor().then(response => {
 					this.doctor = response;
+					this.dbService.pushDB();
 					this.getPatients();
 				});
 				
@@ -236,6 +237,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			this.dbService.updatePatient(patient).then(
 				result => {
 					console.log('updated patient', result, this.patient);
+					this.dbService.pushDB();
 					this.patient._rev = result.rev;
 					this.patientText = {date:"", text:""};
 					this.getPatient(this.patient._id);
@@ -253,22 +255,25 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 
 	filesSelected($event){
 		this.patFiles = $event.target.files;
-
+		let allowedTypes = ["image/jpeg", "image/png", "image/bmp", "image/jpg"];
 		var patient:any = Object.assign({}, this.patient);
 
 		if(patient._attachments == undefined)
         	patient._attachments = {};
 
 		for(let i=0; i<this.patFiles.length; i++){
-        	let name = this.docID + this.patFiles[i].name;
-        	patient._attachments[name] = {
-	          "content_type" : this.patFiles[i].type,
-	          "data" : this.patFiles[i]
-	        }
+			if(allowedTypes.indexOf(this.patFiles[i].type) >= 0){
+	        	let name = this.docID + this.patFiles[i].name;
+	        	patient._attachments[name] = {
+		          "content_type" : this.patFiles[i].type,
+		          "data" : this.patFiles[i]
+		        }
+		    }
 	    }
       
       	this.dbService.updatePatient(patient).then(
         result => {
+        	this.dbService.pushDB();
           console.log('patient updated');
           this.getPatient(this.patient._id);
         }, error => {
@@ -295,6 +300,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		this.dbService.removePatientFile(this.docID + attID, this.patient._id, this.patient._rev).then(
 	      result => {
 	      	console.log(result);
+	      	this.dbService.pushDB();
 	      	delete this.attachments[attID];
 	        this.patient._rev = result.rev;
 	        

@@ -12,6 +12,7 @@ export class InptxtComponent implements OnInit {
 
 	public elementRef;
 	@Input() label: String;
+	@Input() readonly: Boolean = false;
 	@Input() key: String;
 	@Input() inpValue: any;
 	@Output() changedDetail = new EventEmitter<{}>();
