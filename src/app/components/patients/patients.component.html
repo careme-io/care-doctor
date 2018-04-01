@@ -1,16 +1,8 @@
-<!-- <patient-detail 
-    *ngIf="showPatientForm" 
-    (closePatientDetails)="closePatientDetails($event)"
-    [patient]="patient" 
-    [diag]="diagnosis" 
-    [files]="files">
-</patient-detail> -->
-<!-- <app-header [currPage]="this.router.url"></app-header> -->
 <app-header [docName]="docName"></app-header>
 <div class="wrapper">
     <patient-add
         [docID] = "docID"
-        *ngIf="showPatientAdd"
+        [hidden]="!showPatientAdd"
         (addedPatient) = "addDocPatient($event)"
         (closePatientAdd)="closePatientAdd()"
     ></patient-add>
@@ -139,30 +131,8 @@
                                 (closeAtt)="closeAttachment()"
                             ></att-viewer>
                         </div>
-                       <!--  <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group row">
-                                    <label class="col-sm-2 form-control-label">Gender</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control">
-                                    </div>                                
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 form-control-label">Street</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control">
-                                    </div>                                
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 form-control-label">City</label>
-                                    <div class="col-sm-9">
-                                        <input type="email" class="form-control">
-                                    </div>                                
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
-                    <div class="attachments-list-wrapper" [style.height.px]="panelHeight - 315">
+                    <div class="attachments-list-wrapper" [style.height.px]="panelHeight - 440">
                         
                         
                             <ul>

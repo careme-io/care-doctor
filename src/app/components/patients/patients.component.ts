@@ -46,22 +46,19 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 
 	ngOnInit() {
 		
-		//this.authService.authRoute();
-		this.dbService.getDoctor().then(response => {
-			console.log(response);
-			this.doctor = response;
-			this.docName = this.doctor.doctor_name;
-			this.getPatients();
-			this.setPanelHeight();
-			
-		}).catch(err=>{console.log(err)});
+
 		
 		this.docID = localStorage.getItem('docID')
+		this.docName = localStorage.getItem('docName');
+		this.getPatients();
+		this.setPanelHeight();
+
+		this.dbService.getDoctor().then(doctor => {
+			this.doctor = doctor;
+		}).catch(err=>{console.log(err)});
 		
 
 		// if(this.patient == undefined) this.patient = {};
-		
-
 		//set diagnosis wrapper
 		//var diagWrapper = angular.element()
 	}
@@ -183,20 +180,21 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		})
 	}
 	getPatients(){
-		this.dbService.getPatients().then(result => {
-			console.log('got patients', result.rows)
-			let allPatients = result.rows;
-			this.patients = allPatients.filter(pat => {
-				if(this.doctor && this.doctor.patients != undefined){
-					var ind = this.doctor.patients.indexOf(pat.id)
-				 	if(ind >= 0){
-				 		return true;
-				 	}else{
-				 		return false;
-				 	}
-				}
-			})
-		});
+		this.dbService.getDocPatients(this.docID).subscribe(patients => {this.patients = patients});
+		// this.dbService.getPatients().then(result => {
+		// 	console.log('got patients', result.rows)
+		// 	let allPatients = result.rows;
+		// 	this.patients = allPatients.filter(pat => {
+		// 		if(this.doctor && this.doctor.patients != undefined){
+		// 			var ind = this.doctor.patients.indexOf(pat.id)
+		// 		 	if(ind >= 0){
+		// 		 		return true;
+		// 		 	}else{
+		// 		 		return false;
+		// 		 	}
+		// 		}
+		// 	})
+		// });
 		
 	}
 	onDiagChange(){

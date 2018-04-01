@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 //import { HttpModule } from '@angular/http';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -12,7 +13,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { TopbarComponent } from './components/header/topbar/topbar.component';
 import { NavbarComponent } from './components/header/navbar/navbar.component';
 import { PatientsComponent } from './components/patients/patients.component';
-import { MapsComponent } from './components/maps/maps.component';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -34,6 +34,9 @@ import { LauncherComponent } from './components/header/launcher/launcher.compone
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { AgmCoreModule } from '@agm/core';
 import { AuthGuard } from './services/authGuard.service';
+import { ReportsComponent } from './components/reports/reports.component';
+
+import { MapsComponent } from './components/reports/maps/maps.component';
 
 
 @NgModule({
@@ -59,13 +62,15 @@ import { AuthGuard } from './services/authGuard.service';
     ProfileComponent,
     DoctorsComponent,
     LauncherComponent,
-    MainMenuComponent
+    MainMenuComponent,
+    ReportsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
     //HttpModule,
     AppRoutingModule,
     ToastModule.forRoot(),

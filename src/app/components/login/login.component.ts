@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { AuthService } from './../../services/auth.service';
 import { DBService } from './../../services/db.service';
 //import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Doctor } from '../../models/doctor';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
-
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 //@Injectable()
 @Component({
@@ -24,8 +24,12 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading:boolean = true;
 
-  constructor(private dbService: DBService, private authService: AuthService, private router: Router, private fb: FormBuilder) { 
-     this.createForm();
+  constructor(
+    private dbService: DBService, private authService: AuthService, 
+    private router: Router, private fb: FormBuilder,
+    public toastr: ToastsManager, vcr: ViewContainerRef) { 
+    this.createForm();
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -48,7 +52,7 @@ export class LoginComponent implements OnInit {
           this.loading = false;
           if(err.status == 403){
             this.errorMessage = "Inavlid credentials. Try again.";
-            
+            this.toastr.error('Invalid credentials!');
           }
           else{
             this.errorMessage = "Cannot connect server. Check your internet Connection."

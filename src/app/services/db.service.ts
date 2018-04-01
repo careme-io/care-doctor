@@ -1,8 +1,11 @@
+import { Injectable } from '@angular/core';
 import PouchDB from 'pouchdb'
 import PouchFind from 'pouchdb-find'
 import PouchQuickSearch from 'pouchdb-quick-search'
 PouchDB.plugin(PouchQuickSearch)
 PouchDB.plugin(PouchFind)
+
+import { Observable } from 'rxjs/Observable';
 
 import { Doctor } from '../models/doctor';
 
@@ -13,7 +16,7 @@ let localDB = {
   patients	: 	new PouchDB('patients')
 };
 
-
+@Injectable()
 export class DBService {
 
 	/*** Sync  ***/
@@ -93,8 +96,26 @@ export class DBService {
 	/****************/
 
 	getPatients(){
-
 		return localDB.patients.allDocs({ include_docs: true });
+	}
+	getDocPatients(docID){
+		let gotPatients = Observable.create((handle)=>{
+
+			localDB.doctor.get(docID).then(doctor => {
+				localDB.patients.allDocs({ include_docs: true }).then(allPatients => {
+					
+							let filteredPats = allPatients.rows.filter(pat => {
+									if(doctor && doctor.patients != undefined){
+									 	return doctor.patients.indexOf(pat.id) >= 0;
+									}
+								});
+							handle.next(filteredPats);
+
+				});
+			});
+		});
+
+		return gotPatients;
 	}
 	getPatient(id){
 		var patient = localDB.patients.get(id, {attachments: true});

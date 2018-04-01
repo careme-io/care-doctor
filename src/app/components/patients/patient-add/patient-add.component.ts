@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DBService } from '../../../services/db.service';
 import { FormControl, FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { MapsAPILoader } from '@agm/core';
+
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'patient-add',
@@ -16,7 +19,7 @@ export class PatientAddComponent implements OnInit {
 	@Output() addedPatient = new EventEmitter<{}>();
 	cpForm: FormGroup;
 
-	constructor(private dbService: DBService, private fb: FormBuilder) {
+	constructor(private dbService: DBService, private fb: FormBuilder, private mapil: MapsAPILoader) {
 		this.createForm();
 	}
 	createForm(){
@@ -53,17 +56,67 @@ export class PatientAddComponent implements OnInit {
 	// }
 	addPatientClose(){
 	  var patient:any = Object.assign({}, this.cpForm.value);
-	  patient.lat = 0;
-	  patient.long = 0;
-	  console.log(patient);
-		this.dbService.addPatient(patient).then(
-	    result => {
-	      console.log('patient added', result);
-	      this.addedPatient.emit({patID : result.id});
-	      this.closePatientAdd.emit({});
-	    }, error => {
-	      console.error(error);
-	    });
+
+		const getCoords = Observable.create((handle)=>{
+		  	var coords = {lat: 0, lon: 0};
+		  	if(navigator.onLine){
+		  		this.mapil.load().then(()=>{
+		  				console.log('maps loaded')
+		  			  	var geocoder = new google.maps.Geocoder();
+		  			  	geocoder.geocode({ 'address': patient.city },(results, status) => {
+		  			  		if(status == google.maps.GeocoderStatus.OK){
+			  			    	if (results[0] == undefined || results[0] == null) {
+			  			        	return;
+			  			      	}
+			  			    	coords.lat = results[0].geometry.location.lat();
+			  			    	coords.lon = results[0].geometry.location.lng();
+			  			  		handle.next(coords);
+			  			  	}
+		  				});
+		  		})
+		  	}else{
+		  		handle.next(coords);
+		  	}
+		});
+
+		this.closePatientAdd.emit({});
+		getCoords.subscribe(coords=>{
+			patient.lat = coords.lat;
+			patient.lon = coords.lon;
+			this.dbService.addPatient(patient).then(
+		    result => {
+		    	this.cpForm.reset();
+		      console.log('patient added', result);
+			  this.addedPatient.emit({patID : result.id});
+		    }, error => {
+		      console.error(error);
+		    });
+		});
+	  
+  		// this.dbService.addPatient(patient).then(
+  	 //    result => {
+  	 //      console.log('patient added', result);
+  	 //      this.addedPatient.emit({patID : result.id});
+  	 //      this.closePatientAdd.emit({});
+  	 //    }, error => {
+  	 //      console.error(error);
+  	 //    });
+	  
+
+	}
+
+	getCoords(address){
+		// return this.mapil.load().then(() => {
+		//   	var geocoder = new google.maps.Geocoder();
+		//   	geocoder.geocode({ 'address': address },(results, status) => {
+		//     	if (results[0] == undefined || results[0] == null) {
+		//         	return;
+		//       	}
+		//     	this.lat = results[0].geometry.location.lat();
+		//     	this.lng = results[0].geometry.location.lng();
+		  
+		// 	});
+		//});
 	}
 
 

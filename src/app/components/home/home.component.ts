@@ -11,47 +11,24 @@ import { Router } from '@angular/router';
   providers : [DBService, AuthService]
 })
 export class HomeComponent implements OnInit {
-  title = `App works !`;
+  title = 'Careme';
   patients: Array<any> = [];
   doctor: any = { name : ""};
   docID;
+  docName;
 
   constructor(private dbService: DBService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
-  	// this.getPatients();
-   //  this.doctor = this.authService.getDoc();
-   //  if(!this.doctor || !this.doctor._id)
-   //    this.router.navigate(['/login']);
-   //  console.log(this.doctor);
-   //this.authService.authRoute();
-    this.dbService.getDoctor().then(response => {
-      console.log(response);
-      this.doctor = response;
-      this.getPatients();
-    }).catch(err=>{console.log(err)});
-    
     this.docID = localStorage.getItem('docID')
+    this.docName = localStorage.getItem('docName');
+    this.getPatients();
 
   }
 
   
   getPatients(){
-    this.dbService.getPatients().then(result => {
-      console.log('got patients', result.rows)
-      let allPatients = result.rows;
-      this.patients = allPatients.filter(pat => {
-        if(this.doctor && this.doctor.patients != undefined){
-          var ind = this.doctor.patients.indexOf(pat.id)
-           if(ind >= 0){
-             return true;
-           }else{
-             return false;
-           }
-        }
-      })
-    });
-    
+    this.dbService.getDocPatients(this.docID).subscribe(patients => {this.patients = patients});
   }
 
 }

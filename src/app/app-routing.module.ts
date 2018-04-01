@@ -1,6 +1,7 @@
 import { HomeComponent } from './components/home/home.component';
 import { PatientsComponent } from './components/patients/patients.component';
-import { MapsComponent } from './components/maps/maps.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { MapsComponent } from './components/reports/maps/maps.component';
 import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { DoctorsComponent } from './components/doctors/doctors.component';
@@ -20,9 +21,12 @@ const routes: Routes = [
     	component: PatientsComponent
     },
     {
-        path: 'maps',
+        path: 'reports',
         canActivate: [AuthGuard],
-        component: MapsComponent
+        component: ReportsComponent,
+        children: [
+            {path: 'maps', component: MapsComponent}
+        ]
     },
     {
     	path: 'profile',

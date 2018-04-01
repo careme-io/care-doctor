@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+	@Input() sideNav: boolean = false;
 	@Input() currPage: String;
 	@Input() docName: String;
 

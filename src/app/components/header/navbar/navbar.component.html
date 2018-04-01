@@ -4,20 +4,9 @@
         <!--- Sidemenu -->
         <div id="sidebar-menu">
             <ul>
-                
-                <li >
-                    <a routerLink="/" href="javascript:void(0);"  [ngClass]="{'active': currPage == '/'}" class="waves-effect"><i class="fa fa-tachometer"></i></a>
-                </li>
-
                 <li>
-                    <a routerLink="/patients" href="javascript:void(0);" class="waves-effect" [ngClass]="{'active': currPage == '/patients'}"><i class="fa fa-user"></i></a>
+                    <a routerLink="/maps" href="javascript:void(0);" class="waves-effect" [ngClass]="{'active': currPage == 'reports/maps'}"><i class="fa fa-map fa-2x"></i></a>
                 </li>
-
-                <li>
-                    <a routerLink="/maps" href="javascript:void(0);" class="waves-effect" [ngClass]="{'active': currPage == '/maps'}"><i class="fa fa-map"></i></a>
-                </li>
-
-
             </ul>
             <div class="clearfix"></div>
         </div>

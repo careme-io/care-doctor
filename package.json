@@ -27,6 +27,7 @@
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
+    "@types/googlemaps": "^3.30.8",
     "core-js": "^2.4.1",
     "ng2-toastr": "^4.1.2",
     "pouchdb": "^6.3.4",

@@ -7,6 +7,6 @@ export class Patient{
 		public phone: string,
 		public location: string,
 		public lat: number,
-		public long: number
+		public lon: number
 	){}
 }

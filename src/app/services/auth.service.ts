@@ -53,6 +53,7 @@ export class AuthService{
 
 					localStorage.setItem('authToken', response.token);
 					localStorage.setItem('docID', response.email);
+					localStorage.setItem('docName', response.doctor_name);
 
 					PouchDB.replicate('http://159.89.169.255:5984/userprofile', "doctor", {
 	                filter: function (doc) {
@@ -74,6 +75,8 @@ export class AuthService{
 		                    
 		                    }).on('complete', function (info) {
 		                        console.log('patient push complete', info);
+		                        //get patients geocodes
+
 		                        router.navigate(['/']);
 		                    }).on('error', function (err) {
 		                        console.log('error ', err);

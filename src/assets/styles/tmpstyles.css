@@ -50,7 +50,7 @@ input.disabled:hover, a.disabled:hover{
 
 /** new laytout styles **/
 #wrapper.enlarged .left.side-menu #sidebar-menu ul > li:hover > a{
-	width: 70px;
+	/*width: 70px;*/
 }
 .content-page > .content.tight{
 	margin-top: 50px;

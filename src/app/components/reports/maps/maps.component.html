@@ -1,0 +1,15 @@
+<app-header currPage="reports/maps" [docName]="docName" sideNav="true"></app-header>
+<div class="wrapper">
+	<div class="content-page">
+	    <div class="content tight">
+	    	<agm-map [latitude]="lat" [longitude]="lng" [zoom]=9>
+				<agm-marker
+				      *ngFor="let location of locations"
+				      [latitude]="location.lat"
+				      [longitude]="location.lon"
+						[label]="location.count">
+  				</agm-marker>
+			  </agm-map>
+	    </div>
+	</div>
+</div>
