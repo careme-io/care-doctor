@@ -10,7 +10,11 @@
 
 .btn-add-pat{
 	padding-top: 3px;
-	background-color: #fefefe;
+	color:#fefefe;
+	background-color: #5bb2f6;
+	.btn-txt{
+    	padding-left: 3px;
+	}
 }
 
 h4.header-title{
@@ -21,14 +25,114 @@ h4.header-title{
 	background: #f5f4ee;
 	overflow: scroll;
 }
+.items-wrapper{
+	width:100%;
+}
+.items-wrapper ul {
+	width: inherit;
+	margin:0px;
+	padding: 0px;
+	height: 100%;
+	overflow: hidden;
+	padding-bottom:27px;
+}
+.items-wrapper ul > li.item{
+	width: inherit;
+	list-style: none;
+	border-top: 1px solid #fafafa;
+	border-bottom: 1px solid #ddd;
+	padding:5px 5px 5px 10px;
+	box-sizing:border-box;
+}
+.items-wrapper ul > li.item:hover{
+	background-color:#f0f0f0;
+	cursor: pointer;
+}
+.items-wrapper ul > li.active, .items-wrapper ul > li.active:hover{
+	background-color:#a5d5fa;
+	cursor: pointer;
+	border-top: 1px solid #5bb2f6;
+	border-bottom: 1px solid #5bb2f6;
+}
 
 ul.patients-list{
 	li{
-		i{
-			color:#bbb;
+		display:block;
+		width:100%;
+		box-sizing: border-box;
+		height:55px;
+		overflow:hidden;
+		color:#555;
+		.pic-col, .name-col, .visit-col{
+			float:left;
 		}
-		.pat-name{
-			padding-left:5px;
+		.pic-col{
+			width:20%;
+			
+			.pic-wrapper{
+				width: 40px;
+				height:40px;
+				text-align:center;
+				color:#ccc;
+				background:#efefef;
+				border-radius:50%;
+				padding-top:5px;
+				overflow:hidden;
+			}
+		}
+		.name-col{
+			width:50%;
+			font-size:15px;
+			overflow:hidden;
+			.pat-name, .last-msg{
+				white-space: nowrap !important;
+				float:left;
+				width:100%;
+			}
+			.last-msg{
+				font-size:13px;
+				color:#999;
+			}
+		}
+		.visit-col{
+			width:30%;
+			text-align:right;
+			color:#777;
+			margin-top:10px;
+			.last-visit, total-visit{
+				float:right;
+				clear:both;
+				display:block;
+			}
+			.last-visit{
+				width:100%;
+			}
+			.total-visit{
+				font-size:13px;
+				background:#aaa;
+				color:#fff;
+				border-radius:10px;
+				padding:3px 6px;
+			}
+		}
+	}
+	li.active{
+		.pic-col{
+			.pic-wrapper{
+				background:#fefefe;
+			}
+		}
+		.name-col{
+			.pat-name{
+				color:#333;
+			}
+			.last-msg{
+				color:#777;
+			}
+		}
+		.visit-col{
+			color:#555;
+			.total-visit{ background: orange;}
 		}
 	}
 	li.item:nth-child(even){

@@ -51,8 +51,8 @@ export class LoginComponent implements OnInit {
           console.log(err);
           this.loading = false;
           if(err.status == 403){
-            this.errorMessage = "Inavlid credentials. Try again.";
-            this.toastr.error('Invalid credentials!');
+            //this.errorMessage = "Inavlid credentials. Try again.";
+            this.toastr.error('<i class="fas fa-exclamation-circle"></i> Invalid credentials.', null, {enableHTML: true});
           }
           else{
             this.errorMessage = "Cannot connect server. Check your internet Connection."

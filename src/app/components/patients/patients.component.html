@@ -16,16 +16,30 @@
                                 <i class="fa fa-search"></i>
                             </div>
                         <input [(ngModel)]="query" type="text" class="form-control search-input" placeholder="Search patients">
-                        <button class="btn-link btn-add-pat" (click)="togglePatientAdd()"><i class="fa fa-plus-circle"></i> Patient</button>
+                        <button class="btn-link btn-add-pat" (click)="togglePatientAdd()"><i class="fa fa-plus-circle"></i> <span class="btn-txt">Patient</span></button>
                     </div>
                     </div>
                     <div class="items-wrapper">
-                        <ul class="patients-list" [style.height.px]="panelHeight" style="overflow:scroll;">
+                        <ul id="patientList" class="patients-list" [scrollTop]="listScrollValue" [style.height.px]="panelHeight" style="overflow:scroll;">
                            <li class="item" [ngClass]="{'active': pat.id == patient._id}"
                             *ngFor="let pat of patients | search:'name,phone':query" 
                             (click)="getPatient(pat.id)">
-                                <i class="fa fa-user"></i>
-                                <span class="pat-name">{{pat.doc.name}}</span>
+                                <div class="pic-col">
+                                    <div class="pic-wrapper">
+                                        <i class="fa fa-user fa-2x"></i>
+                                    </div>
+                                </div>
+                                <div class="name-col">
+                                    <span class="pat-name">{{pat.doc.name}}</span>
+                                    <span class="last-msg">
+                                        <i>Recent visit:</i>
+                                        <span *ngIf="pat.doc.updated_at">{{pat.doc.updated_at | date:'d MMM y'}}</span>
+                                        <span *ngIf="!pat.doc.updated_at">{{pat.doc.created_at | date:'d MMM y'}}</span>
+                                    </span>
+                                </div>
+                                <div class="visit-col" *ngIf="pat.doc.hisCount">
+                                    <span class="total-visit">{{pat.doc.hisCount}}</span>
+                                </div>
                             </li>
                         </ul>
 
@@ -38,16 +52,19 @@
                                 <div class="input-group select-section">
                                     <span class="input-group-addon">View patient's</span>
                                     <select name="diDataSel" id="" class="form-control" (change)="onDiagChange()" [(ngModel)]="selectedDiag">
+                                        <option value="history">History</option>
                                         <option value="allergies">Allergies</option>
                                         <!-- <option value="comments">comments</option> -->
-                                        <option value="history">History</option>
                                     </select>
                                 </div>
                             
                         
                             <div class="col-100p">
                                 <div class="diagnosis-wrapper" #diagWrapper>
-                                    <h5 class="selected-title">{{selectedDiag}}</h5>
+                                    <h5 class="selected-title">
+                                        <span *ngIf="selectedDiag == 'history'">Visit</span>
+                                        {{selectedDiag}}
+                                    </h5>
                                     <vtimeline
                                         [dim] = "panelDim"
                                         [moments] = "selectedDiagData"
@@ -65,7 +82,7 @@
                         
                     </div>
                 </div>
-                <div class="col-25p tri-col tri-col-right patient-meta-col" [ngClass]="{'dull': !patient.phone}">
+                <div class="col-25p tri-col tri-col-right patient-meta-col" [ngClass]="{'dull': !patient.phone}" [style.height.px]="panelHeight + 12" style="overflow: scroll;">
                     <div class="patient-meta-wrapper">
                         
                                 <h4 class="header-title">Patient Information</h4>
@@ -115,6 +132,13 @@
                                     [inpValue] = "patient.city"
                                     (changedDetail)="updatePatientData($event)"
                                 ></inptxt>
+                                <inptxt 
+                                    label = "First visit"
+                                    key = "city"
+                                    [inpValue] = "patient.created_at | date:'d MMM y'"
+                                    readonly="readonly"
+                                    (changedDetail)="updatePatientData($event)"
+                                ></inptxt>
                             </div>
                             <div class="col-100p">
                                 <div class="attachments-wrapper">
@@ -132,9 +156,7 @@
                             ></att-viewer>
                         </div>
                     </div>
-                    <div class="attachments-list-wrapper" [style.height.px]="panelHeight - 440">
-                        
-                        
+                    <div class="attachments-list-wrapper" style="margin-bottom: 8px">
                             <ul>
                                 <li *ngFor="let att of attachments | objNgFor" (click)="viewAtt(att)">
                                     <div class="att-item">{{att}} <span class="rmv-btn" (click)="onRemoveAtt(att, $event)" ><i class="fa fa-times-circle"></i></span></div>

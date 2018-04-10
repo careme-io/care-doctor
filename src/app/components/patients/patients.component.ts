@@ -1,9 +1,11 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, AfterViewInit, ElementRef, HostListener, ViewContainerRef } from '@angular/core';
 import { DBService } from './../../services/db.service';
 import { AuthService } from './../../services/auth.service';
 import { Router } from '@angular/router';
 import { Patient } from '../../models/patient';
 import { Doctor } from '../../models/doctor';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { OrderPipe } from 'ngx-order-pipe';
 
 @Component({
   selector: 'app-patients',
@@ -14,6 +16,7 @@ import { Doctor } from '../../models/doctor';
 export class PatientsComponent implements OnInit, AfterViewInit {
 	//docID = 101;
 	//docPro = { id: 101, name: "Dr Mathrabootham"};
+	public elementRef;
 	doctor: Doctor;
 	docID;
 	docName;
@@ -25,7 +28,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	patientText: any = {id: "", text: ""}
 	diagnosis: any;
 	files: Array<any>;
-	selectedDiag: any = "allergies";
+	selectedDiag: any = "history";
 	selectedDiagData: Array<any>;
 	panelDim: any = {};
 	patFiles = [];
@@ -33,24 +36,29 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	attachments: any = [];
 	viewAttachment = false;
 	selectedImage:any = {};
+	patientDesc: boolean = false;
+	listScrollValue;
 	public panelHeight;
 	@ViewChild('attBtn') attBtn: ElementRef;
 
 	@ViewChild('diagWrapper') diagWrapper;
-	@HostListener('window:resize') onResize() {this.setPanelHeight()}
-	constructor(private dbService: DBService, private authService: AuthService, private router: Router) { }
+	@HostListener('window:resize') onResize() {
+		this.setPanelHeight();
+	}
+	constructor(private dbService: DBService, private authService: AuthService, private router: Router,public toastr: ToastsManager, vcr: ViewContainerRef, private orderPipe: OrderPipe, element: ElementRef) { 
+		this.toastr.setRootViewContainerRef(vcr);
+		this.elementRef = element;
+	}
 
 	ngAfterViewInit(){
 		//this.setPanelHeight();
+		
 	}
 
 	ngOnInit() {
-		
-
-		
 		this.docID = localStorage.getItem('docID')
 		this.docName = localStorage.getItem('docName');
-		this.getPatients();
+		this.getPatients(0);
 		this.setPanelHeight();
 
 		this.dbService.getDoctor().then(doctor => {
@@ -81,10 +89,12 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		console.log(this.doctor);
 		this.dbService.updateDoctor(this.doctor).then(
 			result => {
+				this.toastr.success('<i class-"fas fa-check-circle"></i> Patient added successfully.', null, {enableHTML:true});
 				this.dbService.getDoctor().then(response => {
 					this.doctor = response;
 					this.dbService.pushDB();
-					this.getPatients();
+					let selectedID = pat.patID;
+					this.getPatients(selectedID);
 				});
 				
 			});
@@ -99,7 +109,7 @@ export class PatientsComponent implements OnInit, AfterViewInit {
     closePatientAdd(){
     	console.log('received close signal');
   		this.showPatientAdd = false;
-  		this.getPatients();
+  		this.getPatients(0);
 	}
 	updatePatientData(data){
 		var patient = this.patient;
@@ -108,9 +118,10 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		this.dbService.updatePatient(patient).then(
 			result => {
 				console.log('updated patient');
+				this.toastr.success('<i class-"fas fa-check-circle"></i> Patient updated successfully.', null, {enableHTML:true});
 				this.dbService.pushDB();
 				this.patient._rev = result.rev;
-				this.getPatients();
+				this.getPatients(0);
 			}, error => {
 				console.log(error);
 			}
@@ -126,10 +137,19 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			});
 	}
 	getPatient(id){
+
+		//var patListElem = this.elementRef.nativeElement.querySelector('#patientList');
 		this.dbService.getPatient(id).then(result =>{
-			console.log(result);
+			// var listIndex = this.getIndexFromObj(this.patients, 'id', id);
+			// console.log('list index ', listIndex);
+			// if(listIndex >= 0){
+			// 	console.log('sctop is ', listIndex * 55);
+			// 	patListElem.scrollTop = 0;
+			// 	patListElem.scrollTop = listIndex * 55;
+			// }
 			this.patient = result;
-			if(result.diagnosis != undefined && result.diagnosis[this.docID]){			
+			if(result.diagnosis != undefined && result.diagnosis[this.docID]){	
+				
 				this.diagnosis = result.diagnosis[this.docID];
 				this.selectedDiagData = this.diagnosis[this.selectedDiag];
 			}else{
@@ -179,8 +199,17 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			console.log('Error', error);
 		})
 	}
-	getPatients(){
-		this.dbService.getDocPatients(this.docID).subscribe(patients => {this.patients = patients});
+	getPatients(selectedID){
+
+		var patListElem = this.elementRef.nativeElement.querySelector('#patientList');
+		// patListElem.scrollTop = 0;
+		selectedID = selectedID || 0;
+		this.dbService.getDocPatients(this.docID).subscribe(patients => {
+			this.patients = this.orderPipe.transform(patients, 'doc.name', false, true);
+			if(selectedID > 0){
+				this.getPatient(selectedID);
+			}
+		});
 		// this.dbService.getPatients().then(result => {
 		// 	console.log('got patients', result.rows)
 		// 	let allPatients = result.rows;
@@ -195,6 +224,8 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 		// 		}
 		// 	})
 		// });
+
+		//this.orderPipe.transform(this.array, this.order)
 		
 	}
 	onDiagChange(){
@@ -235,10 +266,11 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 			this.dbService.updatePatient(patient).then(
 				result => {
 					console.log('updated patient', result, this.patient);
+					this.toastr.success('<i class-"fas fa-check-circle"></i> Patient updated successfully.', null, {enableHTML:true});
 					this.dbService.pushDB();
 					this.patient._rev = result.rev;
 					this.patientText = {date:"", text:""};
-					this.getPatient(this.patient._id);
+					this.getPatients(this.patient._id);
 				}, error => {
 					console.log(error);
 				}
@@ -307,6 +339,21 @@ export class PatientsComponent implements OnInit, AfterViewInit {
 	        console.error(error);
 	      }
 	    );
+	}
+
+	getIndexFromObj(objArr, property, searchValue){
+		console.log('searching for ', property, searchValue);
+		var i=0;
+		for (let value of objArr) {
+		  if(value.hasOwnProperty(property)){
+		  	console.log(value[property]);
+		  	if(value[property] == searchValue){
+		  		return i;
+		  	}
+		  }
+		  i++;
+		}
+		return -1;
 	}
 
 	

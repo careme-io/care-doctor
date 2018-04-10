@@ -28,7 +28,7 @@ export class PatientAddComponent implements OnInit {
 	        phone: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(10)] ],
 	        email: [''],
 	        age: [''],
-	        city: ['']
+	        city: ['', Validators.required]
 	  });
 	}
 
@@ -55,10 +55,22 @@ export class PatientAddComponent implements OnInit {
 
 	// }
 	addPatientClose(){
-	  var patient:any = Object.assign({}, this.cpForm.value);
+		var patient:any = Object.assign({}, this.cpForm.value);
+		var coords = {lat: 0, lon: 0};
+		let patID;
+		this.dbService.addPatient(patient).then(
+	    result => {
+	    	this.closePatientAdd.emit({});	
+	    	this.cpForm.reset();
+	      console.log('patient added', result);
+	      patID = result.id;
+		  this.addedPatient.emit({patID : patID});
+	    }, error => {
+	      console.error(error);
+	    });
 
-		const getCoords = Observable.create((handle)=>{
-		  	var coords = {lat: 0, lon: 0};
+		//const getCoords = Observable.create((handle)=>{
+		  	
 		  	if(navigator.onLine){
 		  		this.mapil.load().then(()=>{
 		  				console.log('maps loaded')
@@ -70,28 +82,31 @@ export class PatientAddComponent implements OnInit {
 			  			      	}
 			  			    	coords.lat = results[0].geometry.location.lat();
 			  			    	coords.lon = results[0].geometry.location.lng();
-			  			  		handle.next(coords);
+
+			  			    	this.dbService.getPatient(patID).then(result =>{
+			  			    		let patient = result;
+			  			    		patient.lat = coords.lat;
+			  			    		patient.lon = coords.lon;
+			  			    		this.dbService.updatePatient(patient).then(
+			  			    			result => {
+			  			    				this.dbService.pushDB();
+			  			    			}, error => {
+			  			    				console.log(error);
+			  			    			}
+			  			    		);
+			  			    	});
 			  			  	}
 		  				});
 		  		})
-		  	}else{
-		  		handle.next(coords);
 		  	}
-		});
+		//});
 
-		this.closePatientAdd.emit({});
-		getCoords.subscribe(coords=>{
-			patient.lat = coords.lat;
-			patient.lon = coords.lon;
-			this.dbService.addPatient(patient).then(
-		    result => {
-		    	this.cpForm.reset();
-		      console.log('patient added', result);
-			  this.addedPatient.emit({patID : result.id});
-		    }, error => {
-		      console.error(error);
-		    });
-		});
+		// this.closePatientAdd.emit({});
+		// getCoords.subscribe(coords=>{
+		// 	patient.lat = coords.lat;
+		// 	patient.lon = coords.lon;
+			
+		// });
 	  
   		// this.dbService.addPatient(patient).then(
   	 //    result => {

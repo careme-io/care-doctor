@@ -109,6 +109,14 @@ export class DBService {
 									 	return doctor.patients.indexOf(pat.id) >= 0;
 									}
 								});
+
+							filteredPats.map(pat => {
+								if(pat.doc.diagnosis && pat.doc.diagnosis[docID].history){
+								let histCount = pat.doc.diagnosis[docID].history.length;
+								pat.doc.hisCount = histCount;
+								pat.doc.hisLast = pat.doc.diagnosis[docID].history[histCount - 1].text;
+							}
+							});
 							handle.next(filteredPats);
 
 				});
@@ -123,12 +131,14 @@ export class DBService {
 	}
 	addPatient(patient){			
 		patient._id = patient.phone;
+		patient.created_at = Date.now();
 		return localDB.patients.put(patient);
 	}
 	removePatientFile(attID, patID, rev){
 		return localDB.patients.removeAttachment(patID, attID, rev);
 	}
 	updatePatient(patient){
+		patient.updated_at = Date.now();
 		return localDB.patients.put(patient)
 	}
 	searchPatient(keyword){

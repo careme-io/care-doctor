@@ -37,6 +37,7 @@ import { DBService } from './../../../services/db.service';
           this.dbService.getDocPatients(this.docID).subscribe(patients => {
             this.patients = patients;
             var locations = {};
+
               
             for(let patient of patients){
               if(patient.doc.lat == 0){

@@ -20,8 +20,8 @@ export class InptxtComponent implements OnInit {
 	initValue: any;
 	isFocus: Boolean = false;
 
-	constructor(inpElement: ElementRef) { 
-		this.elementRef = inpElement;
+	constructor(element: ElementRef) { 
+		this.elementRef = element;
 	}
 
 	ngOnChanges(){
@@ -38,23 +38,28 @@ export class InptxtComponent implements OnInit {
 	}
 
 	onFocus(){
-		this.state = "active";
-		var inp = this.elementRef.nativeElement.querySelector('#'+this.label+this.key);
-		inp.focus();
+		if(!this.readonly){
+			this.state = "active";
+			var inp = this.elementRef.nativeElement.querySelector('#'+this.label+this.key);
+			inp.focus();
+		}
 	}
 
 	onBlur(){
-		if(this.state == 'dirty'){
-			this.inpValue = this.initValue;
+		if(!this.readonly){
+			if(this.state == 'dirty'){
+				this.inpValue = this.initValue;
+			}
+			this.state = "hasData";
 		}
-		this.state = "hasData";
 	}
 
 	onKeyPressed(e){
-		console.log(e);
-		if(this.inpValue != this.initValue){
-			this.state = "dirty";
-			console.log('dirty');
+		if(!this.readonly){
+			if(this.inpValue != this.initValue){
+				this.state = "dirty";
+				console.log('dirty');
+			}
 		}
 	}
 

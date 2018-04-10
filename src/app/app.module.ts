@@ -6,6 +6,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 //import { HttpModule } from '@angular/http';
 import {ToastModule} from 'ng2-toastr/ng2-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
+import { OrderModule } from 'ngx-order-pipe';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
@@ -71,6 +72,7 @@ import { MapsComponent } from './components/reports/maps/maps.component';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    OrderModule,
     //HttpModule,
     AppRoutingModule,
     ToastModule.forRoot(),
