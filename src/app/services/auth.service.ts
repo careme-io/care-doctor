@@ -55,7 +55,7 @@ export class AuthService{
 					localStorage.setItem('docID', response.email);
 					localStorage.setItem('docName', response.doctor_name);
 
-					PouchDB.replicate('http://159.89.169.255:5984/userprofile', "doctor", {
+					PouchDB.replicate('http://159.65.148.169:5984/userprofile', "doctor", {
 	                filter: function (doc) {
 	                    return doc.email === creds.email;
 	                },
@@ -68,7 +68,7 @@ export class AuthService{
 		                    doc_patients = doctor.patients;
 		                    console.log(doc_patients);
 
-		                    PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
+		                    PouchDB.replicate('http://159.65.148.169:5984/patients', "patients", {
 		                    doc_ids: doc_patients,
 		                    live: false,
 		                    retry: false,
@@ -99,7 +99,7 @@ export class AuthService{
 		// 		localStorage.setItem('authToken', response.token);
 		// 		localStorage.setItem('docID', response.email);
 
-		// 		PouchDB.replicate('http://159.89.169.255:5984/userprofile', "doctor", {
+		// 		PouchDB.replicate('http://159.65.148.169:5984/userprofile', "doctor", {
   //               filter: function (doc) {
   //                   return doc.email === creds.email;
   //               },
@@ -112,7 +112,7 @@ export class AuthService{
 	 //                    doc_patients = doctor.patients;
 	 //                    console.log(doc_patients);
 
-	 //                    PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
+	 //                    PouchDB.replicate('http://159.65.148.169:5984/patients', "patients", {
 	 //                    doc_ids: doc_patients,
 	 //                    live: false,
 	 //                    retry: false,

@@ -23,7 +23,7 @@ export class DBService {
 	/***************/
 
 	pushDB(){
-		PouchDB.replicate('patients', "http://159.89.169.255:5984/patients", {
+		PouchDB.replicate('patients', "http://159.65.148.169:5984/patients", {
 			live: false,
 			retry: false
 		}).on('complete', function (info) {
@@ -32,7 +32,7 @@ export class DBService {
 			  console.log('error ', err);
 		});
 		
-		PouchDB.replicate('doctor', "http://159.89.169.255:5984/userprofile", {
+		PouchDB.replicate('doctor', "http://159.65.148.169:5984/userprofile", {
 			live: false,
 			retry: false,
 		}).on('complete', function (info) {
@@ -46,7 +46,7 @@ export class DBService {
 		//let doc_patients;
 		
 
-	        PouchDB.replicate('http://159.89.169.255:5984/patients', "patients", {
+	        PouchDB.replicate('http://159.65.148.169:5984/patients', "patients", {
 	        doc_ids: doc_patients,
 	        live: false,
 	        retry: false,
